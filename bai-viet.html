@@ -1,0 +1,19 @@
+<div id="post-detail">Đang tải nội dung bài viết...</div>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const postId = urlParams.get('id');
+
+if (postId) {
+    // Gọi API lấy chi tiết 1 bài viết dựa trên ID
+    const script = document.createElement('script');
+    script.src = `https://yourblog.blogspot.com/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
+    document.body.appendChild(script);
+}
+
+function displayPost(data) {
+    const content = data.entry.content.$t;
+    const title = data.entry.title.$t;
+    document.getElementById('post-detail').innerHTML = `<h1>${title}</h1>` + content;
+}
+</script>
