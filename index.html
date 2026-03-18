@@ -107,8 +107,7 @@
             #cursor-dot, #cursor-outline { display: none; }
         }
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-904SCZN0ZE"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-904SCZN0ZE"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -125,7 +124,7 @@
 
     <audio id="bg-music" loop></audio>
 
-    <div id="music-control" onclick="toggleMusic()">
+    <div id="music-control" onclick="toggleMusic()" class="paused">
         <div class="music-waves" id="waves">
             <span></span><span></span><span></span><span></span>
         </div>
@@ -285,8 +284,7 @@ function loadPosts(data) {
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('main-container').style.opacity = '1';
                 
-                // Phát bài nhạc đã chọn random
-                bgMusic.play().catch(e => console.log("Cần tương tác"));
+                // [SỬA TẠI ĐÂY]: Đã xóa dòng phát nhạc tự động ở đây
                 
                 musicBtn.style.display = 'flex';
                 type(); 
@@ -295,7 +293,8 @@ function loadPosts(data) {
 
         function toggleMusic() {
             if (bgMusic.paused) {
-                // bgMusic.play();
+                // [SỬA TẠI ĐÂY]: Đã kích hoạt lại lệnh phát nhạc khi nhấn ON
+                bgMusic.play();
                 musicBtn.classList.remove('paused');
                 musicText.innerText = "MUSIC: ON";
             } else {
