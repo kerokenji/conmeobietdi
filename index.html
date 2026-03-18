@@ -159,9 +159,7 @@
         Đang tải bài viết từ server...
     </div>
 <script>
-    // URL RSS của (Mục Cộng đồng mạng)
     const rssUrl = "https://gamek.vn/cong-dong-mang.rss";
-    // Proxy để chuyển XML sang JSON và vượt lỗi CORS
     const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
 
     async function loadGameKPosts() {
@@ -169,18 +167,22 @@
         const DEFAULT_THUMB = 'https://via.placeholder.com/150';
         
         try {
-            container.innerHTML = "Đang tải bài viết...";
             const response = await fetch(proxyUrl);
             const data = await response.json();
 
             if (data.status === 'ok') {
                 let html = '';
-                // Lấy 5 bài mới nhất
                 data.items.slice(0, 5).forEach(item => {
                     const title = item.title;
                     const link = item.link;
-                    // Lấy ảnh: Ưu tiên ảnh thumbnail từ RSS, nếu không có thì dùng ảnh mặc định
-                    const thumbUrl = item.thumbnail || DEFAULT_THUMB;
+                    
+                    // --- ĐÃ FIX: Lấy ảnh thumbnail từ trường 'enclosure' hoặc 'thumbnail' ---
+                    let thumbUrl = DEFAULT_THUMB;
+                    if (item.enclosure && item.enclosure.link) {
+                        thumbUrl = item.enclosure.link;
+                    } else if (item.thumbnail) {
+                        thumbUrl = item.thumbnail;
+                    }
 
                     html += `
                         <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
@@ -200,15 +202,13 @@
                 });
                 container.innerHTML = html;
             } else {
-                container.innerHTML = "Không thể tải dữ liệu từ GameK.";
+                container.innerHTML = "Không thể lấy tin từ GameK.";
             }
         } catch (error) {
             console.error("Lỗi:", error);
-            container.innerHTML = "Lỗi kết nối server tin tức.";
+            container.innerHTML = "Lỗi nạp tin tức.";
         }
     }
-
-    // Chạy hàm ngay khi script được load
     loadGameKPosts();
 </script>
 <script>
