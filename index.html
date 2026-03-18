@@ -159,40 +159,38 @@
         Đang tải bài viết từ server...
     </div>
 <script>
-    // URL RSS của XemGame mục Khám Phá
-    const rssUrl = "https://www.xemgame.com/kham-pha/feed";
-    // Proxy chuyển đổi sang JSON
-    const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-
     async function loadXemGamePosts() {
         const container = document.getElementById('blogger-content');
+        const rssUrl = "https://www.xemgame.com/kham-pha/feed";
+        const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
         const DEFAULT_THUMB = 'https://via.placeholder.com/150';
-        
+
+        // Hàm fetch có giới hạn thời gian chờ (tránh treo trang)
+        const fetchWithTimeout = (url, timeout = 5000) => {
+            return Promise.race([
+                fetch(url),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout))
+            ]);
+        };
+
         try {
-            container.innerHTML = "Đang kết nối với XemGame...";
-            const response = await fetch(proxyUrl);
+            const response = await fetchWithTimeout(proxyUrl);
             const data = await response.json();
 
-            if (data.status === 'ok') {
+            if (data && data.status === 'ok') {
                 let html = '';
                 data.items.slice(0, 5).forEach(item => {
                     const title = item.title;
-                    
-                    // --- LOGIC LẤY ID ĐỂ DÙNG link bai-viet.html ---
-                    // Link gốc dạng: https://www.xemgame.com/abc-xyz-post54321.html
-                    // Ta lấy phần ID cuối cùng để bạn xử lý trong trang chi tiết
+                    // Lấy ID từ link XemGame
                     const urlParts = item.link.split('-');
-                    const postId = urlParts[urlParts.length - 1].replace('.html', '').replace('post', '');
+                    const postId = urlParts[urlParts.length - 1].split('.')[0].replace('post', '');
                     const localLink = `bai-viet.html?id=${postId}`;
                     
-                    // --- LOGIC LẤY ẢNH (XemGame giấu ảnh trong description) ---
+                    // Móc ảnh từ description
                     let thumbUrl = DEFAULT_THUMB;
                     if (item.description) {
-                        // Tìm thẻ <img> đầu tiên trong đoạn mô tả
                         const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
-                        if (imgMatch && imgMatch[1]) {
-                            thumbUrl = imgMatch[1];
-                        }
+                        if (imgMatch && imgMatch[1]) thumbUrl = imgMatch[1];
                     }
 
                     html += `
@@ -212,16 +210,17 @@
                     `;
                 });
                 container.innerHTML = html;
-            } else {
-                container.innerHTML = "Không thể lấy dữ liệu từ XemGame.";
             }
         } catch (error) {
-            console.error("Lỗi:", error);
-            container.innerHTML = "Lỗi nạp tin tức.";
+            console.log("Lỗi hoặc Timeout:", error);
+            container.innerHTML = "Tin tức tạm thời không khả dụng.";
         }
     }
 
-    loadXemGamePosts();
+    // Quan trọng: Gọi hàm sau khi trang đã load xong các thành phần chính
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(loadXemGamePosts, 1000); // Đợi 1 giây sau khi load trang mới bắt đầu lấy tin
+    });
 </script>
 <script>
     const bgMusic = document.getElementById('bg-music');
