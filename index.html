@@ -186,46 +186,49 @@
 
 
 <script>
-```javascript
-        // --- PHẦN XỬ LÝ BLOGGER ---
-        const blogUrl = "tinnaodo.blogspot.com"; // THAY TÊN BLOG CỦA BẠN VÀO ĐÂY
+    // 1. Cấu hình địa chỉ blog của bạn
+    const blogUrl = "tinnaodo.blogspot.com"; 
 
-        function loadPosts(data) {
-            const container = document.getElementById('blogger-content');
-            let html = '';
+    // 2. Hàm xử lý dữ liệu khi nhận được từ Blogger
+    function loadPosts(data) {
+        const container = document.getElementById('blogger-content');
+        let html = '';
 
-            if (data.feed.entry) {
-                data.feed.entry.forEach(entry => {
-                    const title = entry.title.$t;
-                    const fullId = entry.id.$t;
-                    const postId = fullId.split('post-')[1]; 
-                    const localLink = `bai-viet.html?id=${postId}`;
-                    
-                    let thumb = entry.media$thumbnail ? entry.media$thumbnail.url.replace('s72-c', 's1600') : 'https://via.placeholder.com/150';
+        if (data.feed && data.feed.entry) {
+            data.feed.entry.forEach(entry => {
+                const title = entry.title.$t;
+                const fullId = entry.id.$t;
+                const postId = fullId.split('post-')[1]; 
+                const localLink = `bai-viet.html?id=${postId}`;
+                
+                // Lấy ảnh thumbnail, nếu không có thì dùng ảnh mặc định
+                let thumb = entry.media$thumbnail ? entry.media$thumbnail.url.replace('s72-c', 's1600') : 'https://via.placeholder.com/150';
 
-                    html += `
-                        <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
-                            <img src="${thumb}" alt="${title}" style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color);">
-                            <div>
-                                <h3 style="margin: 0; font-size: 1.1rem;">
-                                    <a href="${localLink}" style="text-decoration: none; color: #fff; transition: 0.3s;" onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='#fff'">${title}</a>
-                                </h3>
-                            </div>
+                html += `
+                    <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
+                        <img src="${thumb}" alt="${title}" style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color);">
+                        <div style="text-align: left;">
+                            <h3 style="margin: 0; font-size: 1.1rem;">
+                                <a href="${localLink}" style="text-decoration: none; color: #fff; transition: 0.3s;" onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='#fff'">${title}</a>
+                            </h3>
                         </div>
-                    `;
-                });
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = "Chưa có bài viết mới nào.";
-            }
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = "Không tìm thấy bài viết nào trên blog này.";
         }
+    }
 
-        // Tự động gọi dữ liệu khi trang web load
-        (function() {
-            const script = document.createElement('script');
-            script.src = `https://${blogUrl}/feeds/posts/default?alt=json-in-script&callback=loadPosts&max-results=5`;
-            document.body.appendChild(script);
-        })(); </script>
+    // 3. Tự động gọi dữ liệu khi trang web load (Dùng JSONP để tránh lỗi CORS)
+    (function() {
+        const script = document.createElement('script');
+        // Gọi đến feed của tinnaodo.blogspot.com
+        script.src = `https://${blogUrl}/feeds/posts/default?alt=json-in-script&callback=loadPosts&max-results=5`;
+        document.body.appendChild(script);
+    })();
+</script>
     <script>
         const bgMusic = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-control');
