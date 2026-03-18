@@ -7,7 +7,7 @@ const postId = urlParams.get('id');
 if (postId) {
     // Gọi API lấy chi tiết 1 bài viết dựa trên ID
     const script = document.createElement('script');
-    script.src = `https://yourblog.blogspot.com/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
+    script.src = `https://tinnaodo.blogspot.com/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
     document.body.appendChild(script);
 }
 
