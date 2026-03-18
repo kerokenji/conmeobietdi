@@ -190,7 +190,7 @@
 Bạn cuộn xuống phần `<script>` ở cuối trang. Bạn hãy dán đoạn mã xử lý này vào **ngay trước thẻ đóng `</script>`**. 
 
 > **Lưu ý:** Bạn hãy thay `yourblog.blogspot.com` bằng địa chỉ Blogspot.
-
+<script>
 ```javascript
         // --- PHẦN XỬ LÝ BLOGGER ---
         const blogUrl = "tinnaodo.blogspot.com"; // THAY TÊN BLOG CỦA BẠN VÀO ĐÂY
@@ -230,7 +230,7 @@ Bạn cuộn xuống phần `<script>` ở cuối trang. Bạn hãy dán đoạn
             const script = document.createElement('script');
             script.src = `https://${blogUrl}/feeds/posts/default?alt=json-in-script&callback=loadPosts&max-results=5`;
             document.body.appendChild(script);
-        })();
+        })(); </script>
     <script>
         const bgMusic = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-control');
