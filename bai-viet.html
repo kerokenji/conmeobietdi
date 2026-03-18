@@ -1,19 +1,58 @@
-<div id="post-detail">Đang tải nội dung bài viết...</div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đang tải bài viết...</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+        #post-content img { max-width: 100%; height: auto; border-radius: 8px; } /* Quan trọng: chống tràn ảnh */
+        .loading { text-align: center; margin-top: 50px; font-style: italic; }
+        .back-btn { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
 
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-const postId = urlParams.get('id');
+    <a href="index.html" class="back-btn">← Quay lại trang chủ</a>
+    
+    <article id="post-detail">
+        <h1 id="post-title">Đang tải tiêu đề...</h1>
+        <div id="post-meta" style="color: #888; font-size: 0.9em; margin-bottom: 20px;"></div>
+        <div id="post-content" class="loading">Đang lấy nội dung từ Blogger...</div>
+    </article>
 
-if (postId) {
-    // Gọi API lấy chi tiết 1 bài viết dựa trên ID
-    const script = document.createElement('script');
-    script.src = `https://tinnaodo.blogspot.com/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
-    document.body.appendChild(script);
-}
+    <script>
+        // 1. Lấy ID từ URL (?id=123456)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+        const blogUrl = "tinnaodo.blogspot.com"; // THAY ĐỊA CHỈ BLOG CỦA BẠN VÀO ĐÂY
 
-function displayPost(data) {
-    const content = data.entry.content.$t;
-    const title = data.entry.title.$t;
-    document.getElementById('post-detail').innerHTML = `<h1>${title}</h1>` + content;
-}
-</script>
+        if (postId) {
+            // 2. Gọi API Blogger để lấy chi tiết bài viết đó
+            const script = document.createElement('script');
+            script.src = `https://${blogUrl}/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
+            document.body.appendChild(script);
+        } else {
+            document.getElementById('post-content').innerHTML = "Không tìm thấy ID bài viết!";
+        }
+
+        // 3. Hàm xử lý dữ liệu trả về
+        function displayPost(data) {
+            if (data.entry) {
+                const entry = data.entry;
+                const title = entry.title.$t;
+                const content = entry.content.$t;
+                const published = new Date(entry.published.$t).toLocaleDateString("vi-VN");
+
+                document.title = title;
+                document.getElementById('post-title').innerText = title;
+                document.getElementById('post-meta').innerText = "Đăng ngày: " + published;
+                document.getElementById('post-content').classList.remove('loading');
+                document.getElementById('post-content').innerHTML = content;
+            } else {
+                document.getElementById('post-content').innerHTML = "Bài viết không tồn tại hoặc đã bị xóa.";
+            }
+        }
+    </script>
+</body>
+</html>
