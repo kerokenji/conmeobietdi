@@ -189,37 +189,66 @@
     // 1. Cấu hình địa chỉ blog của bạn
     const blogUrl = "tinnaodo.blogspot.com"; 
 
-    // 2. Hàm xử lý dữ liệu khi nhận được từ Blogger
-    function loadPosts(data) {
-        const container = document.getElementById('blogger-content');
-        let html = '';
+// --- BỘ MÁY XỬ LÝ LẤY BÀI VIẾT + SỬA LỖI ẢNH THUMBNAIL ---
+function loadPosts(data) {
+    const container = document.getElementById('blogger-content');
+    if (!container) return; // Bảo vệ nếu không tìm thấy div
+    
+    let html = '';
 
-        if (data.feed && data.feed.entry) {
-            data.feed.entry.forEach(entry => {
-                const title = entry.title.$t;
-                const fullId = entry.id.$t;
-                const postId = fullId.split('post-')[1]; 
-                const localLink = `bai-viet.html?id=${postId}`;
-                
-                // Lấy ảnh thumbnail, nếu không có thì dùng ảnh mặc định
-                let thumb = entry.media$thumbnail ? entry.media$thumbnail.url.replace('s72-c', 's1600') : 'https://via.placeholder.com/150';
+    // Một ảnh mặc định để dùng nếu bài viết hoàn toàn không có ảnh
+    const DEFAULT_THUMB = 'https://via.placeholder.com/150';
 
-                html += `
-                    <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
-                        <img src="${thumb}" alt="${title}" style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color);">
-                        <div style="text-align: left;">
-                            <h3 style="margin: 0; font-size: 1.1rem;">
-                                <a href="${localLink}" style="text-decoration: none; color: #fff; transition: 0.3s;" onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='#fff'">${title}</a>
-                            </h3>
-                        </div>
+    if (data.feed && data.feed.entry) {
+        data.feed.entry.forEach(entry => {
+            const title = entry.title.$t;
+            const fullId = entry.id.$t;
+            const postId = fullId.split('post-')[1]; 
+            const localLink = `bai-viet.html?id=${postId}`;
+            
+            // --- LOGIC LẤY ẢNH THUMBNAIL (ĐÃ SỬA LỖI) ---
+            let thumbUrl = '';
+
+            // CÁCH 1: Lấy từ thumbnail chính thức
+            if (entry.media$thumbnail) {
+                // Thay 's72-c' bằng 's1600' để lấy ảnh chất lượng cao
+                thumbUrl = entry.media$thumbnail.url.replace('s72-c', 's1600');
+            } 
+            // CÁCH 2: Nếu không có, tìm ảnh đầu tiên trong nội dung bài
+            else if (entry.content && entry.content.$t) {
+                // Dùng RegExp để tìm thẻ <img> đầu tiên
+                let match = entry.content.$t.match(/<img[^>]+src="([^">]+)"/);
+                if (match && match[1]) {
+                    thumbUrl = match[1];
+                }
+            }
+
+            // CÁCH 3: Nếu vẫn không có, dùng ảnh mặc định
+            if (!thumbUrl || thumbUrl === '') {
+                thumbUrl = DEFAULT_THUMB;
+            }
+            // --------------------------------------------
+
+            html += `
+                <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
+                    <img src="${thumbUrl}" alt="${title}" 
+                         style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color);"
+                         onerror="this.src='${DEFAULT_THUMB}'"> <div style="text-align: left;">
+                        <h3 style="margin: 0; font-size: 1.1rem;">
+                            <a href="${localLink}" 
+                               style="text-decoration: none; color: #fff; transition: 0.3s;" 
+                               onmouseover="this.style.color='var(--primary-color)'" 
+                               onmouseout="this.style.color='#fff'">${title}</a>
+                        </h3>
                     </div>
-                `;
-            });
-            container.innerHTML = html;
-        } else {
-            container.innerHTML = "Không tìm thấy bài viết nào trên blog này.";
-        }
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    } else {
+        container.innerHTML = "Chưa có bài viết mới nào.";
     }
+}
 
     // 3. Tự động gọi dữ liệu khi trang web load (Dùng JSONP để tránh lỗi CORS)
     (function() {
