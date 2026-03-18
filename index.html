@@ -243,17 +243,15 @@ function loadPosts(data) {
         bgMusic.load();
     }
     initRandomMusic();
+        // Tự động hiện trang mà không cần click
+    window.onload = function() {
+        startApp();
+    };
     function startApp() {
-        document.getElementById('overlay').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('main-container').style.opacity = '1';
-           
-            // TUYỆT ĐỐI KHÔNG CÓ LỆNH PHÁT NHẠC TỰ ĐỘNG Ở ĐÂY
-           
-            musicBtn.style.display = 'flex';
-            type();
-        }, 1000);
+        // Bỏ overlay, hiện nội dung ngay lập tức
+        document.getElementById('main-container').style.opacity = '1';
+        musicBtn.style.display = 'flex';
+        type();                    // chạy hiệu ứng gõ chữ logo
     }
     function toggleMusic() {
         // Nhạc chỉ chạy khi và chỉ khi bấm vào nút này
