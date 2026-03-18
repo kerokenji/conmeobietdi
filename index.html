@@ -35,7 +35,7 @@
             font-weight: 900; animation: pulse 1.5s infinite;
         }
 
-        /* Nút Music Waves (Sửa lại từ Music Disc) */
+        /* Nút Music Waves */
         #music-control {
             position: fixed; bottom: 30px; right: 30px; z-index: 10002;
             display: none; align-items: center; gap: 10px;
@@ -55,6 +55,7 @@
         .music-waves span:nth-child(3) { animation-delay: 0.4s; }
         
         @keyframes music-bounce { from { height: 4px; } to { height: 18px; } }
+        /* Khi nhạc dừng, sóng nhạc sẽ đứng im */
         .paused span { animation-play-state: paused; height: 3px !important; }
 
         /* Mouse Effect */
@@ -108,13 +109,12 @@
         }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-904SCZN0ZE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-904SCZN0ZE');
-</script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-904SCZN0ZE');
+    </script>
 </head>
 <body>
 
@@ -175,102 +175,78 @@
             </div>
         </div>
     </div>
-<h2 style="color: var(--primary-color); margin-bottom: 30px; text-transform: uppercase; margin-top: 60px;">
-            <i class="fas fa-newspaper"></i> Tin tức mới nhất
-        </h2>
+
+    <h2 style="color: var(--primary-color); margin-bottom: 30px; text-transform: uppercase; margin-top: 60px; text-align: center;">
+        <i class="fas fa-newspaper"></i> Tin tức mới nhất
+    </h2>
+    <div class="container" style="padding-top: 0;">
         <div id="blogger-content" style="text-align: left; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,77,77,0.3);">
             Đang tải bài viết từ server...
         </div>
-        
+    </div>
 
+    <script>
+        const blogUrl = "tinnaodo.blogspot.com"; 
 
-<script>
-    // 1. Cấu hình địa chỉ blog của bạn
-    const blogUrl = "tinnaodo.blogspot.com"; 
+        function loadPosts(data) {
+            const container = document.getElementById('blogger-content');
+            if (!container) return;
+            let html = '';
+            const DEFAULT_THUMB = 'https://via.placeholder.com/150';
 
-// --- BỘ MÁY XỬ LÝ LẤY BÀI VIẾT + SỬA LỖI ẢNH THUMBNAIL ---
-function loadPosts(data) {
-    const container = document.getElementById('blogger-content');
-    if (!container) return; // Bảo vệ nếu không tìm thấy div
-    
-    let html = '';
+            if (data.feed && data.feed.entry) {
+                data.feed.entry.forEach(entry => {
+                    const title = entry.title.$t;
+                    const fullId = entry.id.$t;
+                    const postId = fullId.split('post-')[1]; 
+                    const localLink = `bai-viet.html?id=${postId}`;
+                    let thumbUrl = '';
 
-    // Một ảnh mặc định để dùng nếu bài viết hoàn toàn không có ảnh
-    const DEFAULT_THUMB = 'https://via.placeholder.com/150';
+                    if (entry.media$thumbnail) {
+                        thumbUrl = entry.media$thumbnail.url.replace('s72-c', 's1600');
+                    } else if (entry.content && entry.content.$t) {
+                        let match = entry.content.$t.match(/<img[^>]+src="([^">]+)"/);
+                        if (match && match[1]) thumbUrl = match[1];
+                    }
 
-    if (data.feed && data.feed.entry) {
-        data.feed.entry.forEach(entry => {
-            const title = entry.title.$t;
-            const fullId = entry.id.$t;
-            const postId = fullId.split('post-')[1]; 
-            const localLink = `bai-viet.html?id=${postId}`;
-            
-            // --- LOGIC LẤY ẢNH THUMBNAIL (ĐÃ SỬA LỖI) ---
-            let thumbUrl = '';
+                    if (!thumbUrl) thumbUrl = DEFAULT_THUMB;
 
-            // CÁCH 1: Lấy từ thumbnail chính thức
-            if (entry.media$thumbnail) {
-                // Thay 's72-c' bằng 's1600' để lấy ảnh chất lượng cao
-                thumbUrl = entry.media$thumbnail.url.replace('s72-c', 's1600');
-            } 
-            // CÁCH 2: Nếu không có, tìm ảnh đầu tiên trong nội dung bài
-            else if (entry.content && entry.content.$t) {
-                // Dùng RegExp để tìm thẻ <img> đầu tiên
-                let match = entry.content.$t.match(/<img[^>]+src="([^">]+)"/);
-                if (match && match[1]) {
-                    thumbUrl = match[1];
-                }
+                    html += `
+                        <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
+                            <img src="${thumbUrl}" alt="${title}" style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color);" onerror="this.src='${DEFAULT_THUMB}'">
+                            <div style="text-align: left;">
+                                <h3 style="margin: 0; font-size: 1.1rem;">
+                                    <a href="${localLink}" style="text-decoration: none; color: #fff; transition: 0.3s;" onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='#fff'">${title}</a>
+                                </h3>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = "Chưa có bài viết mới nào.";
             }
+        }
 
-            // CÁCH 3: Nếu vẫn không có, dùng ảnh mặc định
-            if (!thumbUrl || thumbUrl === '') {
-                thumbUrl = DEFAULT_THUMB;
-            }
-            // --------------------------------------------
+        (function() {
+            const script = document.createElement('script');
+            script.src = `https://${blogUrl}/feeds/posts/default?alt=json-in-script&callback=loadPosts&max-results=5`;
+            document.body.appendChild(script);
+        })();
+    </script>
 
-            html += `
-                <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
-                    <img src="${thumbUrl}" alt="${title}" 
-                         style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color);"
-                         onerror="this.src='${DEFAULT_THUMB}'"> <div style="text-align: left;">
-                        <h3 style="margin: 0; font-size: 1.1rem;">
-                            <a href="${localLink}" 
-                               style="text-decoration: none; color: #fff; transition: 0.3s;" 
-                               onmouseover="this.style.color='var(--primary-color)'" 
-                               onmouseout="this.style.color='#fff'">${title}</a>
-                        </h3>
-                    </div>
-                </div>
-            `;
-        });
-        container.innerHTML = html;
-    } else {
-        container.innerHTML = "Chưa có bài viết mới nào.";
-    }
-}
-
-    // 3. Tự động gọi dữ liệu khi trang web load (Dùng JSONP để tránh lỗi CORS)
-    (function() {
-        const script = document.createElement('script');
-        // Gọi đến feed của tinnaodo.blogspot.com
-        script.src = `https://${blogUrl}/feeds/posts/default?alt=json-in-script&callback=loadPosts&max-results=5`;
-        document.body.appendChild(script);
-    })();
-</script>
     <script>
         const bgMusic = document.getElementById('bg-music');
         const musicBtn = document.getElementById('music-control');
         const musicText = document.getElementById('music-text');
 
-        // DANH SÁCH NHẠC RANDOM - KeroN thêm link vào đây nhé
         const playlist = [
-            "/mau_ngu_di_troi_sap_sang_roi.mp3",
+            "/mau_ngu_di_tro_sap_sang_roi.mp3",
             "/VoLuong_Masew.mp3",
             "/Where_Have_You_Gone.mp3",
             "/missyouxFiction.mp3"
         ];
 
-        // Chọn nhạc ngẫu nhiên ngay khi vừa load code
         function initRandomMusic() {
             const randomSong = playlist[Math.floor(Math.random() * playlist.length)];
             bgMusic.src = randomSong;
@@ -284,7 +260,7 @@ function loadPosts(data) {
                 document.getElementById('overlay').style.display = 'none';
                 document.getElementById('main-container').style.opacity = '1';
                 
-                // [SỬA TẠI ĐÂY]: Đã xóa dòng phát nhạc tự động ở đây
+                // Nhạc sẽ KHÔNG phát tự động ở đây nữa
                 
                 musicBtn.style.display = 'flex';
                 type(); 
@@ -293,17 +269,19 @@ function loadPosts(data) {
 
         function toggleMusic() {
             if (bgMusic.paused) {
-                // [SỬA TẠI ĐÂY]: Đã kích hoạt lại lệnh phát nhạc khi nhấn ON
-                bgMusic.play();
+                // Nhấn vào khi đang OFF -> Phát nhạc và hiện ON
+                bgMusic.play().catch(e => console.log("Lỗi phát nhạc:", e));
                 musicBtn.classList.remove('paused');
                 musicText.innerText = "MUSIC: ON";
             } else {
+                // Nhấn vào khi đang ON -> Dừng nhạc và hiện OFF
                 bgMusic.pause();
                 musicBtn.classList.add('paused');
                 musicText.innerText = "MUSIC: OFF";
             }
         }
 
+        // Cursor logic
         const dot = document.getElementById('cursor-dot');
         const outline = document.getElementById('cursor-outline');
         window.addEventListener('mousemove', (e) => {
@@ -315,6 +293,7 @@ function loadPosts(data) {
             }, 50);
         });
 
+        // Typing logic
         const text = "CON MÈO BIẾT ĐI";
         let idx = 0;
         function type() {
@@ -325,11 +304,9 @@ function loadPosts(data) {
             }
         }
     </script>
- <div style="margin-top: 20px; color: #888; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
-    <img src="https://count.getloli.com/get/@conmeobietdi?theme=moebooru" 
-         alt="kero-counter" 
-         style="height: 50px; filter: drop-shadow(0 0 5px rgba(255, 77, 77, 0.5));">
-</div>
-</div>
+
+    <div style="margin-top: 20px; color: #888; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 40px;">
+        <img src="https://count.getloli.com/get/@conmeobietdi?theme=moebooru" alt="kero-counter" style="height: 50px; filter: drop-shadow(0 0 5px rgba(255, 77, 77, 0.5));">
+    </div>
 </body>
 </html>
