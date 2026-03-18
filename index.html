@@ -129,7 +129,7 @@
         <div class="music-waves" id="waves">
             <span></span><span></span><span></span><span></span>
         </div>
-        <span id="music-text" style="font-size: 12px; font-weight: bold; letter-spacing: 1px;">MUSIC: ON</span>
+        <span id="music-text" style="font-size: 12px; font-weight: bold; letter-spacing: 1px;">MUSIC: OFF</span>
     </div>
 
     <div id="cursor-dot"></div>
@@ -295,7 +295,7 @@ function loadPosts(data) {
 
         function toggleMusic() {
             if (bgMusic.paused) {
-                bgMusic.play();
+                // bgMusic.play();
                 musicBtn.classList.remove('paused');
                 musicText.innerText = "MUSIC: ON";
             } else {
