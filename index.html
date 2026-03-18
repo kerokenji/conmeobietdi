@@ -165,32 +165,35 @@
         const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
         const DEFAULT_THUMB = 'https://via.placeholder.com/150';
 
-        // Hàm fetch có giới hạn thời gian chờ (tránh treo trang)
-        const fetchWithTimeout = (url, timeout = 5000) => {
-            return Promise.race([
-                fetch(url),
-                new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout))
-            ]);
-        };
-
         try {
-            const response = await fetchWithTimeout(proxyUrl);
+            // Sử dụng fetch bình thường, rss2json thường phản hồi khá nhanh
+            const response = await fetch(proxyUrl);
             const data = await response.json();
 
             if (data && data.status === 'ok') {
                 let html = '';
                 data.items.slice(0, 5).forEach(item => {
                     const title = item.title;
-                    // Lấy ID từ link XemGame
-                    const urlParts = item.link.split('-');
-                    const postId = urlParts[urlParts.length - 1].split('.')[0].replace('post', '');
+                    
+                    // --- FIX ID: Lấy số ID cuối link để dùng cho bai-viet.html ---
+                    const matchId = item.link.match(/post(\d+)\.html/);
+                    const postId = matchId ? matchId[1] : Date.now();
                     const localLink = `bai-viet.html?id=${postId}`;
                     
-                    // Móc ảnh từ description
+                    // --- FIX ẢNH: Quét cực mạnh trong description để tìm thẻ <img> ---
                     let thumbUrl = DEFAULT_THUMB;
+                    
                     if (item.description) {
-                        const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
-                        if (imgMatch && imgMatch[1]) thumbUrl = imgMatch[1];
+                        // Tìm link ảnh trong thẻ <img src="...">
+                        const imgMatch = item.description.match(/<img[^>]+src="([^">?]+)/);
+                        if (imgMatch && imgMatch[1]) {
+                            thumbUrl = imgMatch[1];
+                        }
+                    }
+                    
+                    // Nếu rss2json có bắt được thumbnail riêng thì ưu tiên nó
+                    if (thumbUrl === DEFAULT_THUMB && item.thumbnail) {
+                        thumbUrl = item.thumbnail;
                     }
 
                     html += `
@@ -212,14 +215,14 @@
                 container.innerHTML = html;
             }
         } catch (error) {
-            console.log("Lỗi hoặc Timeout:", error);
-            container.innerHTML = "Tin tức tạm thời không khả dụng.";
+            console.log("Lỗi XemGame:", error);
+            container.innerHTML = "Không thể tải tin tức từ XemGame.";
         }
     }
 
-    // Quan trọng: Gọi hàm sau khi trang đã load xong các thành phần chính
-    window.addEventListener('DOMContentLoaded', () => {
-        setTimeout(loadXemGamePosts, 1000); // Đợi 1 giây sau khi load trang mới bắt đầu lấy tin
+    // Đợi trang load xong 1 giây rồi mới chạy để tránh lag hiệu ứng gõ chữ
+    window.addEventListener('load', () => {
+        setTimeout(loadXemGamePosts, 1000);
     });
 </script>
 <script>
