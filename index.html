@@ -159,14 +159,17 @@
         Đang tải bài viết từ server...
     </div>
 <script>
-    const rssUrl = "https://gamek.vn/cong-dong-mang.rss";
+    // URL RSS của XemGame mục Khám Phá
+    const rssUrl = "https://www.xemgame.com/kham-pha/feed";
+    // Proxy chuyển đổi sang JSON
     const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
 
-    async function loadGameKPosts() {
+    async function loadXemGamePosts() {
         const container = document.getElementById('blogger-content');
         const DEFAULT_THUMB = 'https://via.placeholder.com/150';
         
         try {
+            container.innerHTML = "Đang kết nối với XemGame...";
             const response = await fetch(proxyUrl);
             const data = await response.json();
 
@@ -174,14 +177,22 @@
                 let html = '';
                 data.items.slice(0, 5).forEach(item => {
                     const title = item.title;
-                    const link = item.link;
                     
-                    // --- ĐÃ FIX: Lấy ảnh thumbnail từ trường 'enclosure' hoặc 'thumbnail' ---
+                    // --- LOGIC LẤY ID ĐỂ DÙNG link bai-viet.html ---
+                    // Link gốc dạng: https://www.xemgame.com/abc-xyz-post54321.html
+                    // Ta lấy phần ID cuối cùng để bạn xử lý trong trang chi tiết
+                    const urlParts = item.link.split('-');
+                    const postId = urlParts[urlParts.length - 1].replace('.html', '').replace('post', '');
+                    const localLink = `bai-viet.html?id=${postId}`;
+                    
+                    // --- LOGIC LẤY ẢNH (XemGame giấu ảnh trong description) ---
                     let thumbUrl = DEFAULT_THUMB;
-                    if (item.enclosure && item.enclosure.link) {
-                        thumbUrl = item.enclosure.link;
-                    } else if (item.thumbnail) {
-                        thumbUrl = item.thumbnail;
+                    if (item.description) {
+                        // Tìm thẻ <img> đầu tiên trong đoạn mô tả
+                        const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
+                        if (imgMatch && imgMatch[1]) {
+                            thumbUrl = imgMatch[1];
+                        }
                     }
 
                     html += `
@@ -191,7 +202,7 @@
                                  onerror="this.src='${DEFAULT_THUMB}'">
                             <div style="text-align: left;">
                                 <h3 style="margin: 0; font-size: 1.1rem;">
-                                    <a href="${link}" target="_blank"
+                                    <a href="${localLink}" 
                                        style="text-decoration: none; color: #fff; transition: 0.3s;" 
                                        onmouseover="this.style.color='var(--primary-color)'" 
                                        onmouseout="this.style.color='#fff'">${title}</a>
@@ -202,14 +213,15 @@
                 });
                 container.innerHTML = html;
             } else {
-                container.innerHTML = "Không thể lấy tin từ GameK.";
+                container.innerHTML = "Không thể lấy dữ liệu từ XemGame.";
             }
         } catch (error) {
             console.error("Lỗi:", error);
             container.innerHTML = "Lỗi nạp tin tức.";
         }
     }
-    loadGameKPosts();
+
+    loadXemGamePosts();
 </script>
 <script>
     const bgMusic = document.getElementById('bg-music');
