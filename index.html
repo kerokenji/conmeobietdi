@@ -170,7 +170,6 @@
         if (data.feed && data.feed.entry) {
             data.feed.entry.forEach(entry => {
                 const title = entry.title.$t;
-                // === SỬA CHỈ PHẦN NÀY: lấy link thật từ Blogger (không dùng bai-viet.html nữa) ===
                 let postLink = '';
                 if (entry.link && Array.isArray(entry.link)) {
                     for (let l of entry.link) {
@@ -181,7 +180,7 @@
                     }
                 }
                 if (!postLink) postLink = `https://${blogUrl}`;
-                // =====================================================================
+
                 let thumbUrl = '';
                 if (entry.media$thumbnail) {
                     thumbUrl = entry.media$thumbnail.url.replace('s72-c', 's1600');
@@ -190,12 +189,13 @@
                     if (match && match[1]) thumbUrl = match[1];
                 }
                 if (!thumbUrl) thumbUrl = DEFAULT_THUMB;
+
                 html += `
-                    <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: center;">
-                        <img src="${thumbUrl}" alt="${title}" style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color);" onerror="this.src='${DEFAULT_THUMB}'">
-                        <div style="text-align: left;">
+                    <div class="news-item" style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; align-items: flex-start;">
+                        <img src="\( {thumbUrl}" alt=" \){title}" style="width:100px; height:70px; object-fit: cover; border-radius: 5px; border: 1px solid var(--primary-color); flex-shrink: 0;" onerror="this.src='${DEFAULT_THUMB}'">
+                        <div style="text-align: left; flex: 1;">
                             <h3 style="margin: 0; font-size: 1.1rem;">
-                                <a href="${postLink}" target="_blank" style="text-decoration: none; color: #fff; transition: 0.3s;" onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='#fff'">${title}</a>
+                                <a href="\( {postLink}" target="_blank" style="text-decoration: none; color: #fff; transition: 0.3s;" onmouseover="this.style.color='var(--primary-color)'" onmouseout="this.style.color='#fff'"> \){title}</a>
                             </h3>
                         </div>
                     </div>
