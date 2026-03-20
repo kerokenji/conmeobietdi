@@ -219,11 +219,13 @@ function loadPosts(data) {
         container.innerHTML = "Chưa có bài viết mới nào.";
     }
 }
-    (function() {
+window.addEventListener('load', () => {
+    setTimeout(() => {
         const script = document.createElement('script');
         script.src = `https://${blogUrl}/feeds/posts/default?alt=json-in-script&callback=loadPosts&max-results=5`;
         document.body.appendChild(script);
-    })();
+    }, 1000);   // ← delay 1000ms để load chậm hơn
+});
 </script>
 <script>
     const bgMusic = document.getElementById('bg-music');
