@@ -265,16 +265,12 @@ window.addEventListener('load', () => {
             musicText.innerText = "MUSIC: OFF";
         }
     }
-    const dot = document.getElementById('cursor-dot');
-    const outline = document.getElementById('cursor-outline');
-    window.addEventListener('mousemove', (e) => {
-        dot.style.left = e.clientX + 'px';
-        dot.style.top = e.clientY + 'px';
-        setTimeout(() => {
-            outline.style.left = e.clientX - 14 + 'px';
-            outline.style.top = e.clientY - 14 + 'px';
-        }, 50);
-    });
+const dot = document.getElementById('cursor-dot');
+
+window.addEventListener('mousemove', (e) => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+});
     const text = "CON MÈO BIẾT ĐI";
     let idx = 0;
     function type() {
