@@ -109,7 +109,7 @@
             html += `<p style="text-align:center;color:#888;">Hết tin tức rồi ạ!</p>`;
         }
 
-        const hasMore = entries.length === 4;
+        const hasMore = entries.length === 10;
         html += `<div style="display:flex;justify-content:center;gap:20px;margin-top:40px;">`;
         if (currentPage > 1) {
             html += `<button onclick="loadBlogList(${currentPage-1});" style="background:#ff4d4d;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;">← Trang trước</button>`;
