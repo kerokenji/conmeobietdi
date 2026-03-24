@@ -6,14 +6,17 @@
     <title>Đang tải bài viết...</title>
     <style>
         body { font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
-        #post-content img { max-width: 100%; height: auto; border-radius: 8px; } /* Quan trọng: chống tràn ảnh */
+        #post-content img { max-width: 100%; height: auto; border-radius: 8px; }
         .loading { text-align: center; margin-top: 50px; font-style: italic; }
-        .back-btn { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; }
+        .back-btn { display: inline-block; margin-bottom: 20px; text-decoration: none; color: #007bff; margin-right: 15px; }
+        .back-container { margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <a href="/" class="back-btn">← Quay lại trang chủ</a>
+    <div class="back-container" id="back-buttons">
+        <!-- JS sẽ tự động thay đổi 2 nút ở đây -->
+    </div>
     
     <article id="post-detail">
         <h1 id="post-title">Đang tải tiêu đề...</h1>
@@ -22,26 +25,42 @@
     </article>
 
 <script>
-    // 1. Lấy ID từ URL (?id=123456)
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('id');
     const blogUrl = "tinnaodo.blogspot.com";
 
+    // ====================== TẠO 2 NÚT BACK ĐỘNG ======================
+    function renderBackButtons(isListMode) {
+        const container = document.getElementById('back-buttons');
+        if (isListMode) {
+            container.innerHTML = `
+                <a href="/" class="back-btn">← Quay lại trang chủ</a>
+            `;
+        } else {
+            container.innerHTML = `
+                <a href="/" class="back-btn">← Quay lại trang chủ</a>
+                <a href="bai-viet.html" class="back-btn">← Quay lại danh sách tin tức</a>
+            `;
+        }
+    }
+    // =================================================================
+
     if (postId) {
-        // === CHẾ ĐỘ XEM BÀI VIẾT ĐƠN (giữ nguyên như cũ) ===
+        // === CHẾ ĐỘ XEM BÀI VIẾT ĐƠN ===
+        renderBackButtons(false);                    // hiện 2 nút
         const script = document.createElement('script');
         script.src = `https://${blogUrl}/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
         document.body.appendChild(script);
     } else {
-        // === CHẾ ĐỘ DANH SÁCH 10 BÀI (mới) ===
+        // === CHẾ ĐỘ DANH SÁCH 10 BÀI ===
+        renderBackButtons(true);                     // chỉ 1 nút trang chủ
         document.title = "Tin Tức - Con Mèo Biết Đi";
         document.getElementById('post-title').innerText = "Tin Tức Mới Nhất";
         document.getElementById('post-meta').style.display = "none";
         document.getElementById('post-content').classList.remove('loading');
-        loadBlogList(1);   // load trang 1 (10 bài)
+        loadBlogList(1);
     }
 
-    // 3. Hàm hiển thị bài viết đơn (giữ nguyên)
     function displayPost(data) {
         if (data.entry) {
             const entry = data.entry;
@@ -52,6 +71,7 @@
             document.title = title;
             document.getElementById('post-title').innerText = title;
             document.getElementById('post-meta').innerText = "Đăng ngày: " + published;
+            document.getElementById('post-meta').style.display = "block";
             document.getElementById('post-content').classList.remove('loading');
             document.getElementById('post-content').innerHTML = content;
         } else {
@@ -59,7 +79,7 @@
         }
     }
 
-    // ====================== PHẦN MỚI: DANH SÁCH + PHÂN TRANG ======================
+    // ====================== DANH SÁCH + PHÂN TRANG (đã tối ưu) ======================
     let currentPage = 1;
 
     function loadBlogList(page) {
@@ -111,14 +131,13 @@
             html += `<p style="text-align:center;color:#888;">Hết tin tức rồi ạ!</p>`;
         }
 
-        // Nút phân trang
         const hasMore = entries.length === 10;
         html += `<div style="display:flex;justify-content:center;gap:20px;margin-top:40px;">`;
         if (currentPage > 1) {
-            html += `<button onclick="loadBlogList(${currentPage-1});" style="background:#ff4d4d;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;">← Trước</button>`;
+            html += `<button onclick="loadBlogList(${currentPage-1});" style="background:#ff4d4d;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;">← Trang trước</button>`;
         }
         if (hasMore) {
-            html += `<button onclick="loadBlogList(${currentPage+1});" style="background:#ff4d4d;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;">Tiếp theo →</button>`;
+            html += `<button onclick="loadBlogList(${currentPage+1});" style="background:#ff4d4d;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;">Trang tiếp →</button>`;
         }
         html += `</div>`;
 
