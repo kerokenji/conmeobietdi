@@ -14,9 +14,7 @@
 </head>
 <body>
 
-    <div class="back-container" id="back-buttons">
-        <!-- JS sẽ tự động thay đổi 2 nút ở đây -->
-    </div>
+    <div class="back-container" id="back-buttons"></div>
     
     <article id="post-detail">
         <h1 id="post-title">Đang tải tiêu đề...</h1>
@@ -25,40 +23,21 @@
     </article>
 
 <script>
+    // ====================== HÀM ĐÃ DI CHUYỂN LÊN TRÊN ĐỂ TRÁNH LỖI HOISTING ======================
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('id');
     const blogUrl = "tinnaodo.blogspot.com";
 
-    // ====================== TẠO 2 NÚT BACK ĐỘNG ======================
     function renderBackButtons(isListMode) {
         const container = document.getElementById('back-buttons');
         if (isListMode) {
-            container.innerHTML = `
-                <a href="/" class="back-btn">← Quay lại trang chủ</a>
-            `;
+            container.innerHTML = `<a href="/" class="back-btn">← Quay lại trang chủ</a>`;
         } else {
             container.innerHTML = `
                 <a href="/" class="back-btn">← Quay lại trang chủ</a>
                 <a href="bai-viet.html" class="back-btn">← Quay lại danh sách tin tức</a>
             `;
         }
-    }
-    // =================================================================
-
-    if (postId) {
-        // === CHẾ ĐỘ XEM BÀI VIẾT ĐƠN ===
-        renderBackButtons(false);                    // hiện 2 nút
-        const script = document.createElement('script');
-        script.src = `https://${blogUrl}/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
-        document.body.appendChild(script);
-    } else {
-        // === CHẾ ĐỘ DANH SÁCH 10 BÀI ===
-        renderBackButtons(true);                     // chỉ 1 nút trang chủ
-        document.title = "Tin Tức - Con Mèo Biết Đi";
-        document.getElementById('post-title').innerText = "Tin Tức Mới Nhất";
-        document.getElementById('post-meta').style.display = "none";
-        document.getElementById('post-content').classList.remove('loading');
-        loadBlogList(1);
     }
 
     function displayPost(data) {
@@ -79,7 +58,6 @@
         }
     }
 
-    // ====================== DANH SÁCH + PHÂN TRANG (đã tối ưu) ======================
     let currentPage = 1;
 
     function loadBlogList(page) {
@@ -143,7 +121,30 @@
 
         container.innerHTML = html;
     }
-    // =============================================================================
+    // ============================================================================================
+
+    // ====================== LOGIC CHÍNH ======================
+    if (postId) {
+        // Xem bài viết đơn
+        renderBackButtons(false);
+        const script = document.createElement('script');
+        script.src = `https://${blogUrl}/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
+        document.body.appendChild(script);
+    } else {
+        // Danh sách tin tức
+        renderBackButtons(true);
+        document.title = "Tin Tức - Con Mèo Biết Đi";
+        document.getElementById('post-title').innerText = "Tin Tức Mới Nhất";
+        document.getElementById('post-meta').style.display = "none";
+        
+        // ← SỬA Ở ĐÂY: xóa loading text cũ và hiện loading danh sách rõ ràng
+        const contentDiv = document.getElementById('post-content');
+        contentDiv.classList.remove('loading');
+        contentDiv.innerHTML = `<p style="text-align:center;color:#888;">Đang tải danh sách tin tức từ Blogger...</p>`;
+
+        loadBlogList(1);
+    }
+    // ========================================================
 </script>
 </body>
 </html>
