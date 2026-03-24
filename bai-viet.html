@@ -21,38 +21,110 @@
         <div id="post-content" class="loading">Đang lấy nội dung từ Blogger...</div>
     </article>
 
-    <script>
-        // 1. Lấy ID từ URL (?id=123456)
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get('id');
-        const blogUrl = "tinnaodo.blogspot.com"; // THAY ĐỊA CHỈ BLOG CỦA BẠN VÀO ĐÂY
+<script>
+    // 1. Lấy ID từ URL (?id=123456)
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id');
+    const blogUrl = "tinnaodo.blogspot.com";
 
-        if (postId) {
-            // 2. Gọi API Blogger để lấy chi tiết bài viết đó
-            const script = document.createElement('script');
-            script.src = `https://${blogUrl}/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
-            document.body.appendChild(script);
+    if (postId) {
+        // === CHẾ ĐỘ XEM BÀI VIẾT ĐƠN (giữ nguyên như cũ) ===
+        const script = document.createElement('script');
+        script.src = `https://${blogUrl}/feeds/posts/default/${postId}?alt=json-in-script&callback=displayPost`;
+        document.body.appendChild(script);
+    } else {
+        // === CHẾ ĐỘ DANH SÁCH 10 BÀI (mới) ===
+        document.title = "Tin Tức - Con Mèo Biết Đi";
+        document.getElementById('post-title').innerText = "Tin Tức Mới Nhất";
+        document.getElementById('post-meta').style.display = "none";
+        document.getElementById('post-content').classList.remove('loading');
+        loadBlogList(1);   // load trang 1 (10 bài)
+    }
+
+    // 3. Hàm hiển thị bài viết đơn (giữ nguyên)
+    function displayPost(data) {
+        if (data.entry) {
+            const entry = data.entry;
+            const title = entry.title.$t;
+            const content = entry.content.$t;
+            const published = new Date(entry.published.$t).toLocaleDateString("vi-VN");
+
+            document.title = title;
+            document.getElementById('post-title').innerText = title;
+            document.getElementById('post-meta').innerText = "Đăng ngày: " + published;
+            document.getElementById('post-content').classList.remove('loading');
+            document.getElementById('post-content').innerHTML = content;
         } else {
-            document.getElementById('post-content').innerHTML = "Không tìm thấy ID bài viết!";
+            document.getElementById('post-content').innerHTML = "Bài viết không tồn tại hoặc đã bị xóa.";
         }
+    }
 
-        // 3. Hàm xử lý dữ liệu trả về
-        function displayPost(data) {
-            if (data.entry) {
-                const entry = data.entry;
+    // ====================== PHẦN MỚI: DANH SÁCH + PHÂN TRANG ======================
+    let currentPage = 1;
+
+    function loadBlogList(page) {
+        currentPage = page;
+        const startIndex = (page - 1) * 10 + 1;
+        const script = document.createElement('script');
+        script.src = `https://${blogUrl}/feeds/posts/default?alt=json-in-script&callback=displayBlogList&max-results=10&start-index=${startIndex}`;
+        document.body.appendChild(script);
+    }
+
+    function displayBlogList(data) {
+        const container = document.getElementById('post-content');
+        let html = `<h2 style="color:#ff4d4d;text-align:center;margin-bottom:25px;">📋 Danh sách tin tức (10 bài)</h2>`;
+
+        const DEFAULT_THUMB = 'https://via.placeholder.com/150';
+        let entries = (data.feed && data.feed.entry) ? data.feed.entry : [];
+
+        if (entries.length > 0) {
+            entries.forEach(entry => {
                 const title = entry.title.$t;
-                const content = entry.content.$t;
-                const published = new Date(entry.published.$t).toLocaleDateString("vi-VN");
+                const fullId = entry.id.$t;
+                const postId = fullId.split('post-')[1];
+                const localLink = `bai-viet.html?id=${postId}`;
 
-                document.title = title;
-                document.getElementById('post-title').innerText = title;
-                document.getElementById('post-meta').innerText = "Đăng ngày: " + published;
-                document.getElementById('post-content').classList.remove('loading');
-                document.getElementById('post-content').innerHTML = content;
-            } else {
-                document.getElementById('post-content').innerHTML = "Bài viết không tồn tại hoặc đã bị xóa.";
-            }
+                let thumbUrl = '';
+                if (entry.media$thumbnail) {
+                    thumbUrl = entry.media$thumbnail.url.replace('s72-c', 's1600');
+                } else if (entry.content && entry.content.$t) {
+                    let match = entry.content.$t.match(/<img[^>]+src="([^">]+)"/);
+                    if (match && match[1]) thumbUrl = match[1];
+                }
+                if (!thumbUrl) thumbUrl = DEFAULT_THUMB;
+
+                html += `
+                    <div style="display:flex;gap:15px;margin-bottom:20px;border-bottom:1px solid #ddd;padding-bottom:15px;align-items:center;">
+                        <img src="${thumbUrl}" alt="${title}" 
+                             style="width:100px;height:70px;object-fit:cover;border-radius:5px;border:1px solid #ff4d4d;"
+                             onerror="this.src='${DEFAULT_THUMB}'">
+                        <div style="flex:1;text-align:left;">
+                            <h3 style="margin:0;font-size:1.1rem;">
+                                <a href="${localLink}" style="text-decoration:none;color:#333;transition:0.3s;"
+                                   onmouseover="this.style.color='#ff4d4d'" 
+                                   onmouseout="this.style.color='#333'">${title}</a>
+                            </h3>
+                        </div>
+                    </div>`;
+            });
+        } else {
+            html += `<p style="text-align:center;color:#888;">Hết tin tức rồi ạ!</p>`;
         }
-    </script>
+
+        // Nút phân trang
+        const hasMore = entries.length === 10;
+        html += `<div style="display:flex;justify-content:center;gap:20px;margin-top:40px;">`;
+        if (currentPage > 1) {
+            html += `<button onclick="loadBlogList(${currentPage-1});" style="background:#ff4d4d;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;">← Trước</button>`;
+        }
+        if (hasMore) {
+            html += `<button onclick="loadBlogList(${currentPage+1});" style="background:#ff4d4d;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;">Tiếp theo →</button>`;
+        }
+        html += `</div>`;
+
+        container.innerHTML = html;
+    }
+    // =============================================================================
+</script>
 </body>
 </html>
