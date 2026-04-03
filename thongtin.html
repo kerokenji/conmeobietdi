@@ -136,7 +136,9 @@
             display: block;
             margin-bottom: 5px;
         }
-
+        html {
+    scroll-behavior: smooth; /* Lệnh này giúp trang trượt mượt mà */
+        }
         /* Footer Buttons */
         .footer-nav {
             display: flex;
@@ -210,7 +212,7 @@
                 <li><b>Parry:</b> Chuột phải để đỡ đá của Tank ném.</li>
                 <li><b>Kích động:</b> Tiếng súng làm thu hút đám Zombie chạy tới.</li>
                 <li><b>Incap Battle:</b> Vẫn bắn được súng, giữ <code>Ctrl</code> tự cứu.</li>
-                <li><b>Vũ khí:</b> Thêm Melee riêng cho server (Yêu cầu Addons).</li>
+                <li><b>Vũ khí:</b> Thêm Melee riêng cho server <a href="#footer-links" style="color: var(--accent-color); text-decoration: none; border-bottom: 1px dashed;">(Yêu cầu Addons)</a>.</li>
                 <li><b>Môi trường:</b> Xe nổ (25k HP), can xăng bơm lại cho cưa.</li>
                 <li><b>Hardcore:</b> Không spam được cửa an toàn.</li>
             </ul>
@@ -251,10 +253,10 @@
         </div>
     </div>
 
-    <div class="footer-nav">
-        <a href="/" class="btn btn-back">← Trở lại trang chủ</a>
-        <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3667391237" target="_blank" class="btn btn-addons">Cài đặt Addons (Workshop)</a>
-    </div>
+    <div id="footer-links" class="footer-nav">
+    <a href="/" class="btn btn-back">← Trở lại trang chủ</a>
+    <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3667391237" target="_blank" class="btn btn-addons">Cài đặt Addons (Workshop)</a>
+</div>
 </div>
 
 </body>
