@@ -94,6 +94,64 @@
             .logo-text { font-size: 2.5rem; }
             #cursor-dot, #cursor-outline { display: none; }
         }
+        .sneak-peek-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 40px auto;
+    max-width: 800px;
+}
+
+.peek-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.peek-card:hover {
+    background: rgba(59, 130, 246, 0.05);
+    border-color: #3b82f6;
+    transform: translateY(-5px);
+}
+
+.peek-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.peek-title {
+    font-weight: bold;
+    color: #fff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.peek-desc {
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.view-more-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 30px;
+    border: 1px solid #3b82f6;
+    color: #3b82f6;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.view-more-btn:hover {
+    background: #3b82f6;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-904SCZN0ZE"></script>
 <script>
@@ -151,6 +209,35 @@
             </div>
         </div>
     </div>
+
+    <div class="sneak-peek-section" style="text-align: center; margin-top: 50px;">
+    <h2 style="color: #fff; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;">Tính năng nổi bật</h2>
+    
+    <div class="sneak-peek-container">
+        <div class="peek-card">
+            <span class="peek-icon">☢️</span>
+            <span class="peek-title">Tank Michael Bay</span>
+            <span class="peek-desc">Ném đá Nuke, Teleport và kỹ năng bay nhảy cực cháy.</span>
+        </div>
+
+        <div class="peek-card">
+            <span class="peek-icon">🔫</span>
+            <span class="peek-title">Hệ thống CS2</span>
+            <span class="peek-desc">Cơ chế Reload mới và kho Melee riêng biệt cho server.</span>
+        </div>
+
+        <div class="peek-card">
+            <span class="peek-icon">💀</span>
+            <span class="peek-title">Expert Mode</span>
+            <span class="peek-desc">Độ khó Lão Luyện thử thách tinh thần đồng đội cực cao.</span>
+        </div>
+    </div>
+
+    <a href="/features" class="view-more-btn">
+        Xem tất cả 20+ Plugin & Lệnh Chat →
+    </a>
+</div>
+    
     <h2 style="color: var(--primary-color); margin-bottom: 30px; text-transform: uppercase; margin-top: 60px; text-align: center;">
         <i class="fas fa-newspaper"></i> Tin tức mới nhất
     </h2>
