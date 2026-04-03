@@ -3,170 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tính năng Server - CON MÈO BIẾT ĐI</title>
+    <title>Chi tiết Server - CON MÈO BIẾT ĐI</title>
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --card-bg: #161616;
-            --accent-color: #3b82f6; /* Màu xanh gaming */
+            --bg-color: #0d0d0d;
+            --card-bg: #1a1a1a;
+            --accent-color: #3b82f6;
             --text-main: #ffffff;
-            --text-dim: #a1a1aa;
-            --update-color: #f59e0b; /* Màu cam cho cập nhật */
+            --text-dim: #94a3b8;
+            --update-color: #fbbf24;
+            --code-bg: #2d2d2d;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.6;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 50px 20px;
         }
 
-        /* Header Section */
+        /* Header */
         header {
             text-align: center;
-            margin-bottom: 50px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 30px;
+            margin-bottom: 60px;
         }
 
         h1 {
-            font-size: 2.5rem;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
+            font-size: 3rem;
+            margin: 0;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .host-info {
-            color: var(--accent-color);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .server-meta {
-            margin-top: 15px;
+        .host-label {
+            font-size: 1.2rem;
             color: var(--text-dim);
-            font-size: 0.95rem;
+            margin-top: 10px;
         }
 
-        /* Grid Layout */
+        .host-name { color: #f87171; font-weight: bold; }
+
+        /* Grid */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 50px;
+            gap: 25px;
+            margin-bottom: 60px;
         }
 
         .card {
             background: var(--card-bg);
-            border: 1px solid #262626;
-            padding: 24px;
-            border-radius: 12px;
-            transition: transform 0.2s ease;
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-5px);
             border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .card h3 {
+        .card h2 {
+            font-size: 1.4rem;
             margin-top: 0;
             color: var(--accent-color);
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
+        ul { list-style: none; padding: 0; margin: 0; }
 
         li {
-            margin-bottom: 10px;
-            padding-left: 20px;
+            padding: 10px 0 10px 25px;
             position: relative;
+            border-bottom: 1px solid #252525;
             font-size: 0.95rem;
         }
 
+        li:last-child { border-bottom: none; }
+
         li::before {
-            content: "▹";
+            content: "→";
             position: absolute;
             left: 0;
             color: var(--accent-color);
         }
 
         code {
-            background: #2d2d2d;
+            background: var(--code-bg);
+            color: #f87171;
             padding: 2px 6px;
             border-radius: 4px;
-            color: #ef4444;
-            font-family: monospace;
-        }
-
-        /* Update Timeline Section */
-        .updates-section {
-            background: #111;
-            padding: 30px;
-            border-radius: 12px;
-            border-left: 4px solid var(--update-color);
-        }
-
-        .update-item {
-            margin-bottom: 20px;
-        }
-
-        .update-date {
-            color: var(--update-color);
             font-weight: bold;
+        }
+
+        /* Update Section */
+        .changelog {
+            background: #111;
+            border-radius: 16px;
+            padding: 30px;
+            border: 1px dashed #444;
+        }
+
+        .changelog h2 { color: var(--update-color); margin-top: 0; }
+
+        .update-entry {
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 2px solid var(--update-color);
+        }
+
+        .date {
+            font-weight: bold;
+            color: var(--update-color);
             font-size: 0.9rem;
             display: block;
+            margin-bottom: 5px;
         }
 
-        /* Buttons */
-        .btn-group {
+        /* Footer Buttons */
+        .footer-nav {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 40px;
+            gap: 20px;
+            margin-top: 50px;
         }
 
         .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
             text-decoration: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
+            font-weight: bold;
             transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
-        .btn-primary {
-            background: var(--accent-color);
-            color: white;
-        }
+        .btn-back { border: 1px solid var(--text-dim); color: var(--text-dim); }
+        .btn-addons { background: var(--accent-color); color: white; }
 
-        .btn-outline {
-            border: 1px solid var(--text-dim);
-            color: var(--text-dim);
-        }
+        .btn:hover { opacity: 0.8; transform: scale(1.05); }
 
-        .btn:hover {
-            opacity: 0.8;
-            filter: brightness(1.2);
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
+        @media (max-width: 768px) {
             .feature-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -175,80 +171,89 @@
 <div class="container">
     <header>
         <h1>CON MEO BIET DI</h1>
-        <div class="host-info">Chủ host: MÈO CON (Michael Bay Server)</div>
-        <div class="server-meta">
-            🕒 Thời gian: Tối 7h30 cuối tuần | ☢️ Host 16+ <br>
-            🔗 <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3667391237" style="color: var(--accent-color);">Link Addons Server</a> | <a href="/" style="color: var(--accent-color);">Tham gia Server</a>
+        <p class="host-label">Chủ host: <span class="host-name">KeroN</span> (Michael Bay Server)</p>
+        <div style="color: var(--text-dim); font-size: 0.9rem;">
+            🕒 Tối 7h30 cuối tuần | 💀 Độ khó: <b>Expert (Lão luyện)</b>
         </div>
     </header>
 
     <div class="feature-grid">
         <div class="card">
-            <h3>🎮 Cơ chế Gameplay</h3>
+            <h2>⌨️ Lệnh & Hỗ trợ</h2>
             <ul>
-                <li>Menu sẵn sàng: <code>F1</code> Ready, <code>F2</code> Unready hoặc chat <code>!ready</code>.</li>
+                <li><code>F1/F2</code> hoặc <code>!ready/!unready</code> để sẵn sàng.</li>
+                <li>Lệnh <code>!cuu</code>: Cứu đồng đội đang bị incap về cạnh mình.</li>
+                <li>Lệnh <code>!cuutoi</code>: Giải kẹt khi rơi vào góc lag.</li>
+                <li>Lệnh <code>!drop</code>: Vứt vật phẩm đang cầm.</li>
+                <li>Lệnh <code>!bocuoc</code>: Dùng khi bị incap hoặc treo người.</li>
                 <li>Hồi sinh nhân vật sau khi chết.</li>
-                <li>Incap vẫn nhặt được súng.</li>
-                <li>Giữ <code>Ctrl</code> để tự cứu khi có đồ slot 4 & 5.</li>
-                <li>Ping vật phẩm/đồ đạc bằng phím <code>Z</code>.</li>
-                <li>Bỏ cuộc khi bị incapacitate: <code>!bocuoc</code>.</li>
+                <li>Nhấn <code>Z</code> để Ping vật phẩm cho đồng đội.</li>
             </ul>
         </div>
 
         <div class="card">
-            <h3>👹 Special Infected (SI)</h3>
+            <h2>👹 Special Infected (SI)</h2>
             <ul>
-                <li><b>Tank:</b> Bay nhảy, ném đá nuke/mưa đá, hất tung, gầm rớt súng, teleport, healing field.</li>
-                <li><b>Boomer:</b> Lăng ba vi bộ, nổ hất tung gây sát thương.</li>
-                <li><b>Charger:</b> Tổ lái (có thể tông hụt).</li>
-                <li><b>Hunter:</b> Không bị hất, vồ trúng có tỉ lệ văng đá.</li>
+                <li>SI có khả năng <b>Giả dạng</b> người chơi.</li>
+                <li><b>Tank Michael Bay:</b> Bay nhảy, ném đá Nuke, Teleport, Healing field.</li>
+                <li><b>Boomer:</b> Lăng ba vi bộ, nổ gây hất tung + dame.</li>
+                <li><b>Charger:</b> Tổ lái linh hoạt (có thể tông hụt).</li>
+                <li><b>Hunter:</b> Kháng hất, vồ trúng có tỉ lệ văng đá.</li>
                 <li><b>Fallen Zombie:</b> Kẻ trộm đồ chuyên nghiệp.</li>
-                <li>SI có khả năng <b>Giả dạng</b>.</li>
             </ul>
         </div>
 
         <div class="card">
-            <h3>🔥 Tương tác & Thực tế</h3>
+            <h2>🛠️ Cơ chế & Thực tế</h2>
             <ul>
-                <li>Phản đòn (Parry): Chuột phải để đỡ đá Tank ném.</li>
-                <li>Bắn súng sẽ kích động Zombie chạy về phía bạn.</li>
-                <li>Xe có thể nổ (HP: 25k).</li>
-                <li>Vứt đồ nhanh: <code>!drop</code>.</li>
-                <li>Dùng can xăng để bơm lại cho cưa máy.</li>
-                <li>Thân thiện: Melee gây <code>-1 HP</code> lên đồng đội.</li>
-                <li>Vật phẩm cháy nổ gây sát thương thực tế.</li>
+                <li><b>CS2 Reload:</b> Hệ thống nạp đạn kiểu mới.</li>
+                <li><b>Parry:</b> Chuột phải để đỡ đá của Tank ném.</li>
+                <li><b>Kích động:</b> Tiếng súng làm thu hút đám Zombie chạy tới.</li>
+                <li><b>Incap Battle:</b> Vẫn bắn được súng, giữ <code>Ctrl</code> tự cứu.</li>
+                <li><b>Vũ khí:</b> Thêm Melee riêng cho server (Yêu cầu Addons).</li>
+                <li><b>Môi trường:</b> Xe nổ (25k HP), can xăng bơm lại cho cưa.</li>
+                <li><b>Hardcore:</b> Không spam được cửa an toàn.</li>
             </ul>
         </div>
     </div>
 
-    <div class="updates-section">
-        <h3 style="margin-top:0;">🚀 Nhật ký cập nhật</h3>
+    <div class="changelog">
+        <h2>🚀 Nhật ký cập nhật</h2>
         
-        <div class="update-item">
-            <span class="update-date">Cập nhật 22/02</span>
-            <li>Hệ thống <b>CS2 Reload</b> mới.</li>
-            <li>Thêm Melee riêng cho Server (Yêu cầu sub Addons).</li>
+        <div class="update-entry">
+            <span class="date">22/02</span>
+            Update CS2 reload & Thêm Melee riêng cho server.
         </div>
 
-        <div class="update-item">
-            <span class="update-date">Cập nhật 08/02</span>
-            <li>Lệnh <code>!cuu</code> / <code>!cuunguoi</code>: Dịch chuyển đồng đội bị incap về cạnh mình (Yêu cầu cả hai đứng im).</li>
+        <div class="update-entry">
+            <span class="date">15/02</span>
+            Tiếng súng sẽ làm kích động và thu hút Zombie.
         </div>
 
-        <div class="update-item">
-            <span class="update-date">Cập nhật 18/01</span>
-            <li>Độ khó mặc định: <b>Expert</b> (Lão luyện/Impossible).</li>
+        <div class="update-entry">
+            <span class="date">08/02</span>
+            Thêm lệnh <code>!cuu</code> để cứu người từ xa (Yêu cầu đứng im).
         </div>
 
-        <div class="update-item">
-            <span class="update-date">Cập nhật 10/01</span>
-            <li>Lệnh <code>!cuutoi</code>: Giải kẹt khi bị rơi vào góc lag.</li>
+        <div class="update-entry">
+            <span class="date">18/01</span>
+            Thiết lập độ khó mặc định: <b>Expert (Impossible)</b>.
+        </div>
+
+        <div class="update-entry">
+            <span class="date">10/01</span>
+            Thêm lệnh <code>!cuutoi</code> giải vây góc lag.
+        </div>
+
+        <div class="update-entry">
+            <span class="date">15/12</span>
+            SI có khả năng giả dạng.
         </div>
     </div>
 
-    <div class="btn-group">
-        <a href="/" class="btn btn-outline">← Trở về trang chủ</a>
-        <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3667391237" target="_blank" class="btn btn-primary">Cài đặt Addons</a>
+    <div class="footer-nav">
+        <a href="/" class="btn btn-back">← Trở lại trang chủ</a>
+        <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3667391237" target="_blank" class="btn btn-addons">Cài đặt Addons (Workshop)</a>
     </div>
 </div>
 
