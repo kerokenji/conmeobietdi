@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính năng Server - CON MEO BIET DI</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #161616;
+            --accent-color: #3b82f6; /* Màu xanh gaming */
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
+            --update-color: #f59e0b; /* Màu cam cho cập nhật */
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .host-info {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .server-meta {
+            margin-top: 15px;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        /* Grid Layout */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid #262626;
+            padding: 24px;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        code {
+            background: #2d2d2d;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #ef4444;
+            font-family: monospace;
+        }
+
+        /* Update Timeline Section */
+        .updates-section {
+            background: #111;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid var(--update-color);
+        }
+
+        .update-item {
+            margin-bottom: 20px;
+        }
+
+        .update-date {
+            color: var(--update-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--text-dim);
+            color: var(--text-dim);
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+            filter: brightness(1.2);
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>CON MEO BIET DI</h1>
+        <div class="host-info">Chủ host: KeroN (Michael Bay Server)</div>
+        <div class="server-meta">
+            🕒 Thời gian: Tối 7h30 cuối tuần | ☢️ Host 16+ <br>
+            🔗 <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3667391237" style="color: var(--accent-color);">Link Addons Server</a>
+        </div>
+    </header>
+
+    <div class="feature-grid">
+        <div class="card">
+            <h3>🎮 Cơ chế Gameplay</h3>
+            <ul>
+                <li>Menu sẵn sàng: <code>F1</code> Ready, <code>F2</code> Unready hoặc chat <code>!ready</code>.</li>
+                <li>Hồi sinh nhân vật sau khi chết.</li>
+                <li>Incap vẫn nhặt được súng.</li>
+                <li>Giữ <code>Ctrl</code> để tự cứu khi có đồ slot 4 & 5.</li>
+                <li>Ping vật phẩm/đồ đạc bằng phím <code>Z</code>.</li>
+                <li>Bỏ cuộc khi bị incapacitate: <code>!bocuoc</code>.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>👹 Special Infected (SI)</h3>
+            <ul>
+                <li><b>Tank:</b> Bay nhảy, ném đá nuke/mưa đá, hất tung, gầm rớt súng, teleport, healing field.</li>
+                <li><b>Boomer:</b> Lăng ba vi bộ, nổ hất tung gây sát thương.</li>
+                <li><b>Charger:</b> Tổ lái (có thể tông hụt).</li>
+                <li><b>Hunter:</b> Không bị hất, vồ trúng có tỉ lệ văng đá.</li>
+                <li><b>Fallen Zombie:</b> Kẻ trộm đồ chuyên nghiệp.</li>
+                <li>SI có khả năng <b>Giả dạng</b>.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>🔥 Tương tác & Thực tế</h3>
+            <ul>
+                <li>Phản đòn (Parry): Chuột phải để đỡ đá Tank ném.</li>
+                <li>Bắn súng sẽ kích động Zombie chạy về phía bạn.</li>
+                <li>Xe có thể nổ (HP: 25k).</li>
+                <li>Vứt đồ nhanh: <code>!drop</code>.</li>
+                <li>Dùng can xăng để bơm lại cho cưa máy.</li>
+                <li>Thân thiện: Melee gây <code>-1 HP</code> lên đồng đội.</li>
+                <li>Vật phẩm cháy nổ gây sát thương thực tế.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="updates-section">
+        <h3 style="margin-top:0;">🚀 Nhật ký cập nhật</h3>
+        
+        <div class="update-item">
+            <span class="update-date">Cập nhật 22/02</span>
+            <li>Hệ thống <b>CS2 Reload</b> mới.</li>
+            <li>Thêm Melee riêng cho Server (Yêu cầu sub Addons).</li>
+        </div>
+
+        <div class="update-item">
+            <span class="update-date">Cập nhật 08/02</span>
+            <li>Lệnh <code>!cuu</code> / <code>!cuunguoi</code>: Dịch chuyển đồng đội bị incap về cạnh mình (Yêu cầu cả hai đứng im).</li>
+        </div>
+
+        <div class="update-item">
+            <span class="update-date">Cập nhật 18/01</span>
+            <li>Độ khó mặc định: <b>Expert</b> (Lão luyện/Impossible).</li>
+        </div>
+
+        <div class="update-item">
+            <span class="update-date">Cập nhật 10/01</span>
+            <li>Lệnh <code>!cuutoi</code>: Giải kẹt khi bị rơi vào góc lag.</li>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <a href="/" class="btn btn-outline">← Trở về trang chủ</a>
+        <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3667391237" target="_blank" class="btn btn-primary">Cài đặt Addons</a>
+    </div>
+</div>
+
+</body>
+</html>
