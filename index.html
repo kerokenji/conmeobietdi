@@ -369,7 +369,18 @@ window.addEventListener('mousemove', (e) => {
     }
 </script>
 
-    <script>
+<script>
+    async function getVideoTitle(id) {
+        try {
+            // Sử dụng link oEmbed để lấy thông tin video mà không cần API Key
+            const response = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
+            const data = await response.json();
+            return data.title;
+        } catch (e) {
+            return "Xem video trên YouTube"; // Tiêu đề dự phòng nếu lỗi
+        }
+    }
+
     async function loadRandomVideos() {
         const videoContainer = document.getElementById('youtube-videos');
         const jsonUrl = "https://conmeobietdi.vercel.app/video_ids.json";
@@ -379,41 +390,43 @@ window.addEventListener('mousemove', (e) => {
             const videoIds = await response.json();
 
             if (videoIds && videoIds.length > 0) {
-                // Trộn ngẫu nhiên danh sách ID
                 const shuffled = videoIds.sort(() => 0.5 - Math.random());
-                // Lấy 3 ID đầu tiên sau khi trộn
-                const selectedVideos = shuffled.slice(0, 3);
+                const selectedIds = shuffled.slice(0, 3);
 
                 let html = '';
-                selectedVideos.forEach(id => {
+                
+                // Chạy vòng lặp để lấy tiêu đề cho từng video
+                for (const id of selectedIds) {
+                    const title = await getVideoTitle(id);
+                    
                     html += `
-                        <a href="https://www.youtube.com/watch?v=${id}" target="_blank" class="peek-card" style="text-decoration: none;">
+                        <a href="https://www.youtube.com/watch?v=${id}" target="_blank" class="peek-card" style="text-decoration: none; display: flex; flex-direction: column;">
                             <div style="position: relative; margin-bottom: 12px;">
                                 <img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" 
-                                     alt="YouTube Video" 
+                                     alt="${title}" 
                                      style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 77, 77, 0.3); display: block;">
                                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem; opacity: 0.8;">
                                     <i class="fab fa-youtube"></i>
                                 </div>
                             </div>
-                            <span class="peek-title">XEM VIDEO</span>
-                            <span class="peek-desc">Nhấn để xem trên YouTube</span>
+                            <span class="peek-title" style="font-size: 0.9rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                ${title}
+                            </span>
+                            <span class="peek-desc" style="margin-top: auto; padding-top: 5px;">Nhấn để xem clip</span>
                         </a>
                     `;
-                });
+                }
                 videoContainer.innerHTML = html;
-            } else {
-                videoContainer.innerHTML = "<p>Không tìm thấy dữ liệu video.</p>";
             }
         } catch (error) {
-            console.error("Lỗi khi tải video:", error);
-            videoContainer.innerHTML = "<p style='color: #888;'>Không thể tải danh sách video lúc này.</p>";
+            console.error("Lỗi:", error);
+            videoContainer.innerHTML = "<p>Không thể tải video.</p>";
         }
     }
 
-    // Chạy hàm khi trang web đã load xong
     window.addEventListener('DOMContentLoaded', loadRandomVideos);
-    </script>
+</script>
+
     
 <div style="margin-top: 20px; color: #888; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 40px;">
     <img src="https://count.getloli.com/get/@conmeobietdi?theme=moebooru" alt="kero-counter" style="height: 50px; filter: drop-shadow(0 0 5px rgba(255, 77, 77, 0.5));">
