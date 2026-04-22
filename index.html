@@ -216,7 +216,65 @@
 </div>
     </div>
 
+    <h2 style="color: var(--primary-color); margin-bottom: 30px; text-transform: uppercase; margin-top: 60px; text-align: center;">
+        <i class="fab fa-youtube"></i> Video Nổi Bật
+    </h2>
+    <div id="youtube-videos" class="sneak-peek-container">
+        <p style="color: #888; grid-column: 1/-1;">Đang kết nối với YouTube...</p>
+    </div>
+    ```
 
+### 2. Phần JavaScript (Chèn vào cuối file, trước thẻ `</body>`)
+
+Bạn hãy copy đoạn script này và dán vào dưới cùng của các thẻ `<script>` hiện có:
+
+```javascript
+<script>
+    async function loadRandomVideos() {
+        const videoContainer = document.getElementById('youtube-videos');
+        const jsonUrl = "https://conmeobietdi.vercel.app/video_ids.json";
+        
+        try {
+            const response = await fetch(jsonUrl);
+            const videoIds = await response.json();
+
+            if (videoIds && videoIds.length > 0) {
+                // Trộn ngẫu nhiên danh sách ID
+                const shuffled = videoIds.sort(() => 0.5 - Math.random());
+                // Lấy 3 ID đầu tiên sau khi trộn
+                const selectedVideos = shuffled.slice(0, 3);
+
+                let html = '';
+                selectedVideos.forEach(id => {
+                    html += `
+                        <a href="https://www.youtube.com/watch?v=${id}" target="_blank" class="peek-card" style="text-decoration: none;">
+                            <div style="position: relative; margin-bottom: 12px;">
+                                <img src="https://img.youtube.com/vi/${id}/mqdefault.jpg" 
+                                     alt="YouTube Video" 
+                                     style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 77, 77, 0.3); display: block;">
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem; opacity: 0.8;">
+                                    <i class="fab fa-youtube"></i>
+                                </div>
+                            </div>
+                            <span class="peek-title">XEM VIDEO</span>
+                            <span class="peek-desc">Nhấn để xem trên YouTube</span>
+                        </a>
+                    `;
+                });
+                videoContainer.innerHTML = html;
+            } else {
+                videoContainer.innerHTML = "<p>Không tìm thấy dữ liệu video.</p>";
+            }
+        } catch (error) {
+            console.error("Lỗi khi tải video:", error);
+            videoContainer.innerHTML = "<p style='color: #888;'>Không thể tải danh sách video lúc này.</p>";
+        }
+    }
+
+    // Chạy hàm khi trang web đã load xong
+    window.addEventListener('DOMContentLoaded', loadRandomVideos);
+</script>
+    
     
     <h2 style="color: var(--primary-color); margin-bottom: 30px; text-transform: uppercase; margin-top: 60px; text-align: center;">
         <i class="fas fa-newspaper"></i> Tin tức mới nhất
