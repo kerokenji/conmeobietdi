@@ -18,7 +18,7 @@ const statIncaps = document.getElementById('stat-incaps');
 async function loadData() {
     try {
         const [namesRes, statsRes] = await Promise.all([
-            fetch('./data/mappings.json'),
+            fetch('./mappings.json'),
             fetch('./data/ff_stats_current.json')
         ]);
 
