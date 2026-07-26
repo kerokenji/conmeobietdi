@@ -14,6 +14,21 @@ const statShotted = document.getElementById('stat-shotted');
 const statKills = document.getElementById('stat-kills');
 const statIncaps = document.getElementById('stat-incaps');
 
+// Hàm hỗ trợ vô hiệu hóa ký tự đặc biệt trong Regex (Ngoặc, chấm, sao,...)
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// Hàm hỗ trợ escape HTML tránh vỡ giao diện nếu tên chứa ký tự < > &
+function escapeHTML(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 // 1. Tải dữ liệu từ 2 file JSON trong thư mục data/
 async function loadData() {
     try {
@@ -49,7 +64,7 @@ searchInput.addEventListener('input', function () {
         return;
     }
 
-    // Lọc danh sách các tên khớp ký tự nhập vào
+    // Lọc danh sách tên (Hỗ trợ tốt Tiếng Trung, Ả Rập, Unicode & Ký tự đặc biệt)
     const matchedNames = Object.keys(namesData).filter(name => 
         name.toLowerCase().includes(query)
     );
@@ -60,13 +75,16 @@ searchInput.addEventListener('input', function () {
         noResultItem.textContent = 'Không tìm thấy người chơi...';
         autocompleteList.appendChild(noResultItem);
     } else {
+        const safeQuery = escapeRegExp(query);
+        const reg = new RegExp(`(${safeQuery})`, 'gi');
+
         matchedNames.forEach(name => {
             const li = document.createElement('li');
             li.className = 'px-5 py-3 cursor-pointer hover:bg-indigo-600/30 transition-colors flex justify-between items-center';
             
-            // Highlight phần từ khóa khớp
-            const reg = new RegExp(`(${query})`, 'gi');
-            const highlightedName = name.replace(reg, '<span class="text-indigo-400 font-bold">$1</span>');
+            // Safe Highlight ký tự khớp
+            const safeName = escapeHTML(name);
+            const highlightedName = safeName.replace(reg, '<span class="text-indigo-400 font-bold">$1</span>');
 
             li.innerHTML = `<span>${highlightedName}</span>`;
             
@@ -81,7 +99,7 @@ searchInput.addEventListener('input', function () {
     autocompleteList.classList.remove('hidden');
 });
 
-// Hide dropdown khi click ra ngoài
+// Hide dropdown khi click ra ngoài thanh tìm kiếm
 document.addEventListener('click', function (e) {
     if (!searchInput.contains(e.target) && !autocompleteList.contains(e.target)) {
         autocompleteList.classList.add('hidden');
@@ -115,7 +133,6 @@ function selectPlayer(name) {
 
 // Hàm hỗ trợ hiệu ứng nhảy số
 function animateNumber(element, targetValue) {
-    let startValue = 0;
     const duration = 500; // ms
     const startTime = performance.now();
 
