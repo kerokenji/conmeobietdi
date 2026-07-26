@@ -1,0 +1,350 @@
+[
+  {
+    "id": 1,
+    "name": "Hùng Vương",
+    "info": "Vị quân vương huyền thoại của đất Văn Lang, mang khí phách dựng nước và uy nghi của thời đại các Vua Hùng.",
+    "image": "https://i.ibb.co/9MFWLNs/vuahung.png"
+  },
+  {
+    "id": 2,
+    "name": "Space Marine",
+    "info": "Những chiến binh siêu nhân được sinh ra cho chiến tranh, khoác giáp thép khổng lồ và gieo nỗi kinh hoàng khắp thiên hà.",
+    "image": "https://i.ibb.co/hJKPDtd1/spacemarine.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Lữ Bố",
+    "info": "Chiến thần Tam Quốc với sức mạnh vô song, kẻ khiến cả chiến trường run sợ dưới lưỡi Phương Thiên Họa Kích.",
+    "image": "https://i.ibb.co/9mxrCCkL/lubo.png"
+  },
+  {
+    "id": 4,
+    "name": "Hai Bà Trưng",
+    "info": "Hai nữ anh hùng cưỡi voi ra trận, phất cờ khởi nghĩa chống ngoại xâm và khắc tên mình vào lịch sử dân tộc.",
+    "image": "https://i.ibb.co/b5MMGCxZ/trungtractrungnhi.png"
+  },
+  {
+    "id": 5,
+    "name": "Gia Cát Lượng",
+    "info": "Bậc quân sư thiên tài của Tam Quốc, người dùng trí tuệ để xoay chuyển cả chiến trường.",
+    "image": "https://i.ibb.co/ccKsCZqk/giacatluong.png"
+  },
+  {
+    "id": 6,
+    "name": "Ngô Quyền",
+    "info": "Vị anh hùng dân tộc đã đánh tan quân Nam Hán trên sông Bạch Đằng, mở ra thời kỳ độc lập cho Việt Nam.",
+    "image": "https://i.ibb.co/mCz5F6X5/ngoquyen.png"
+  },
+  {
+    "id": 7,
+    "name": "Khổng Tử",
+    "info": "Khổng Tử là nhà tư tưởng, nhà giáo dục, triết gia và nhà lý luận chính trị lỗi lạc thời Xuân Thu, được hậu thế tôn vinh là vạn thế sư biểu và là người sáng lập ra Nho giáo.",
+    "image": "https://i.ibb.co/zYjQx7j/khongtu.png"
+  },
+  {
+    "id": 8,
+    "name": "Monkey D. Luffy (Nika)",
+    "info": "Là thuyền trưởng của băng hải tặc Mũ Rơm trong bộ truyện One Piece, nổi tiếng với ước mơ trở thành Vua Hải Tặc và tìm ra kho báu huyền thoại.",
+    "image": "https://i.ibb.co/xK2b6R9L/luffy-nika.jpg"
+  },
+  {
+    "id": 9,
+    "name": "Son Goku",
+    "info": "Son Goku (tên gốc: Kakarot) là nhân vật chính biểu tượng của loạt manga/anime nổi tiếng Dragon Ball (Bảy Viên Ngọc Rồng) do Akira Toriyama sáng tác.",
+    "image": "https://i.ibb.co/C39BFxc9/gokuvocuc.jpg"
+  },
+  {
+    "id": 10,
+    "name": "Saitama",
+    "info": "Anh là siêu anh hùng mạnh nhất thế giới, luôn đánh bại mọi kẻ thù chỉ bằng một cú đấm. Ngoại hình đặc trưng của anh là đầu trọc và bộ trang phục màu vàng.",
+    "image": "https://i.ibb.co/xq2bS5Hq/saitama.png"
+  },
+  {
+    "id": 11,
+    "name": "Uzumaki Naruto",
+    "info": "Là một nhẫn giả làng Lá mồ côi từ nhỏ, mang phong ấn Cửu Vĩ, vượt nghịch cảnh và trở thành Hokage Đệ Thất.",
+    "image": "https://i.ibb.co/PsBq2pCT/naruto.png"
+  },
+  {
+    "id": 12,
+    "name": "Quan Vũ",
+    "info": "Quan Vũ: Tướng Tam Quốc mặt đỏ, râu dài, cưỡi Xích Thố, sử dụng Thanh Long Đao. Ông là biểu tượng của lòng trung nghĩa và được tôn làm Võ Thánh.",
+    "image": "https://i.ibb.co/qYRnyCZ0/quanvu.png"
+  },
+  {
+    "id": 13,
+    "name": "Hokage Đệ Ngũ (Tsunade)",
+    "info": "Nổi danh là một trong ba Sannin huyền thoại và là nữ y nhẫn giả tài giỏi nhất mọi thế hệ. Bà sở hữu sức mạnh thể chất phi thường cùng khả năng trị thương đỉnh cao.",
+    "image": "https://i.ibb.co/Z6hdPQbf/tsunade.png"
+  },
+  {
+    "id": 14,
+    "name": "2B (Nier: Automata)",
+    "info": "2B là một nữ android chiến đấu lạnh lùng, xinh đẹp và đa năng thuộc lực lượng YoRHa, người luôn tuân theo mệnh lệnh, che giấu cảm xúc, nhưng ẩn sau vẻ ngoài điềm tĩnh ấy là một trái tim bi kịch phải chịu đựng số phận nghiệt ngã.",
+    "image": "https://i.ibb.co/j9SvxPCY/2b.jpg"
+  },
+  {
+    "id": 15,
+    "name": "Tất Đạt Đa (Record of Ragnarok)",
+    "info": "Tất Đạt Đa (Buddha) trong là một vị thần ngạo nghễ, phóng khoáng và nổi loạn, người sẵn sàng quay lưng lại với phe thần để bảo vệ nhân loại vì tin rằng chỉ có bản thân mới quyết định được chính mình.",
+    "image": "https://i.ibb.co/QFMLqdvX/tatdatda.jpg"
+  },
+  {
+    "id": 16,
+    "name": "Lữ Bố (Record of Ragnarok)",
+    "info": "Anh ta là một trong những chiến binh đầu tiên đại diện cho loài người chiến đấu chống lại các vị thần trong giải đấu Ragnarok.",
+    "image": "https://i.ibb.co/20qvXVc2/lubo-Recordof-Ragnarok.png"
+  },
+  {
+    "id": 17,
+    "name": "Plague Doctor",
+    "info": "Là những thầy thuốc thời Trung cổ/cận đại châu Âu, nổi tiếng với bộ trang phục bảo hộ có mặt nạ hình mỏ chim chứa thảo mộc để điều trị cho bệnh nhân mắc bệnh dịch hạch.",
+    "image": "https://i.ibb.co/WppV05WD/bacsidichhach.jpg"
+  },
+  {
+    "id": 18,
+    "name": "Thomas Michael Shelby",
+    "info": "Thomas Shelby là thủ lĩnh băng đảng Peaky Blinders lạnh lùng, mưu mô và quyến rũ, một cựu chiến binh Thế chiến thứ nhất bị ám ảnh bởi quá khứ, không ngừng tham vọng đưa gia tộc Shelby vươn lên đỉnh cao quyền lực tại Birmingham.",
+    "image": "https://i.ibb.co/qFLJV8Vc/Thomas-Shelby.png"
+  },
+  {
+    "id": 19,
+    "name": "Vương Lâm (Chu Tước tinh)",
+    "info": "Là một thiếu niên tầm thường may mắn bước vào tiên lộ, trải qua biết bao gian khổ, từng bước tiến về phía trước, dùng sức một mình vang danh tu chân giới.",
+    "image": "https://i.ibb.co/pTzZfRF/vuonglam.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Vương Lâm (Cổ thần 3 sao)",
+    "info": "Sở hữu thân thể cường đại, kết hợp với tinh hoa thừa kế của Đồ Ti, giúp hắn sở hữu sức mạnh nhục thân vượt trội và khả năng phòng ngự, sát thương đáng sợ trong giới tu chân.",
+    "image": "https://i.ibb.co/wN5JNPdt/vuonglamcothan3sao.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Tề Thiên Đại Thánh",
+    "info": "Tôn Ngộ Không là nhân vật thần thoại nổi tiếng với sự thông minh, dũng mãnh và 72 phép biến hóa khôn lường, nổi bật nhất là hành trình phò tá Đường Tăng đi lấy kinh.",
+    "image": "https://i.ibb.co/ynKY4vQm/wukong.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Imperial Fists",
+    "info": "Imperial Fists là các chuyên gia phòng thủ kiên cường, nổi tiếng với khả năng xây dựng và công thành vững chắc, trung thành tuyệt đối với Hoàng đế.",
+    "image": "https://i.ibb.co/p6y7pZJX/imperial-fists.jpg"
+  },
+  {
+    "id": 23,
+    "name": "2B Noel Edition (Nier: Automata)",
+    "info": "2B trong phiên bản Noel này trông quyến rũ và nổi bật với bộ trang phục Giáng Sinh đỏ‑đen, điểm xuyết lông trắng và nơ nhỏ, vừa gợi cảm vừa mang nét lạnh lùng đặc trưng của cô.",
+    "image": "https://i.ibb.co/3mWx3G0H/2bnoel.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Ultramarines",
+    "info": "Ultramarines là quân đoàn Space Marine thiên về chiến thuật tổng lực, tổ chức quân đội hoàn hảo và khả năng thích nghi cực mạnh trên mọi chiến trường.",
+    "image": "https://i.ibb.co/xSSYWpxp/Ultramarines1.png"
+  },
+  {
+    "id": 25,
+    "name": "Saber Fanart",
+    "info": "Saber trong hình toát lên vẻ kiêu hùng và quyến rũ, khoác bộ giáp tím đỏ rực rỡ giữa khung cảnh lửa cháy, ánh mắt vàng sắc lạnh đầy uy lực.",
+    "image": "https://i.ibb.co/5WgQ6Jtw/saberzubu.jpg"
+  },
+  {
+    "id": 26,
+    "name": "Saber",
+    "info": "Saber (Artoria Pendragon) là nữ Servant lớp kiếm sĩ kiên cường, mang hình tượng Vua Arthur huyền thoại, nổi tiếng với sự trung thành và thanh thánh kiếm Excalibur trong series Fate.",
+    "image": "https://i.ibb.co/ym5Ddd4d/saber.jpg"
+  },
+  {
+    "id": 27,
+    "name": "Emperor of Mankind",
+    "info": "Hoàng đế nhân loại là thực thể tâm linh mạnh nhất lịch sử, vị cha già bất tử của nhân loại, kẻ đang bị mắc kẹt trên Golden Throne dưới hình hài một xác chết biết suy nghĩ để dẫn dắt con người vượt qua sự tăm tối.",
+    "image": "https://i.ibb.co/99DXR7yc/Emperor-of-Mankind.jpg"
+  },
+  {
+    "id": 28,
+    "name": "Ainz Ooal Gown",
+    "info": "Là đấng tối cao, pháp sư quyền năng và là người đứng đầu tuyệt đối của Lăng mộ Lớn Nazarick, luôn hành động thận trọng để bảo vệ thuộc hạ và danh tiếng của các đấng tạo hóa.",
+    "image": "https://i.ibb.co/GvgfKwY4/Ainz-sama.jpg"
+  },
+  {
+    "id": 29,
+    "name": "2B Chiến binh giữa tàn tích",
+    "info": "2B tung mình giữa hoàng hôn đổ nát, vung kiếm sáng rực trong không trung.",
+    "image": "https://i.ibb.co/0Rm3vRFr/2battack.jpg"
+  },
+  {
+    "id": 30,
+    "name": "Kirigaya Kazuto (Kirito)",
+    "info": "Kirito là một game thủ solo dũng cảm và tài năng, người có ý chí mạnh mẽ, sẵn sàng làm mọi thứ để bảo vệ những người thân yêu trong các thế giới ảo.",
+    "image": "https://i.ibb.co/7xJHkpHk/kirito.jpg"
+  },
+  {
+    "id": 31,
+    "name": "Sinbad",
+    "info": "Là vị vua huyền thoại của Sindria, nổi tiếng với việc chinh phục 7 hầm ngục và sở hữu sức mạnh to lớn từ các Djinn. Anh là một nhân vật phức tạp, vừa là đồng minh đáng tin cậy vừa mang những tham vọng và bí mật đen tối nhằm thay đổi thế giới.",
+    "image": "https://i.ibb.co/B2vhJcv1/Sinbad.jpg"
+  },
+  {
+    "id": 32,
+    "name": "Vigilante Deku",
+    "info": "Deku trong hình hào hùng, u ám, với năng lượng xanh sấm sét bùng nổ giữa thành phố mưa bão.",
+    "image": "https://i.ibb.co/QjNZVq3t/Vigilante-Deku.jpg"
+  },
+  {
+    "id": 33,
+    "name": "Tanjiro (Hơi Thở Mặt Trời)",
+    "info": "Sức mạnh và ý chí bùng cháy, khi cậu hòa mình vào Hơi Thở của Lửa, ánh kiếm rực cháy phản chiếu tinh thần chiến đấu kiên cường và lòng quyết tâm bảo vệ người thân.",
+    "image": "https://i.ibb.co/Zz4k7sky/Tanjiro-Hoa-Than.jpg"
+  },
+  {
+    "id": 34,
+    "name": "Lawliet L",
+    "info": "Là thám tử tư tài ba nhất trong bộ truyện Death Note, nổi tiếng với trí tuệ siêu việt, lập dị và khả năng suy luận logic không ai sánh kịp. Anh được biết đến qua việc đối đầu sinh tử với Kira và luôn đặt công lý lên hàng đầu, bất chấp ngoại hình kỳ quặc cùng các thói quen ăn đồ ngọt kỳ lạ.",
+    "image": "https://i.ibb.co/HLQN6M34/Lawliet-L.jpg"
+  },
+  {
+    "id": 35,
+    "name": "Violet (Violet Evergarden)",
+    "info": "Là một cựu binh trẻ tuổi, người từng chỉ biết đến chiến tranh, đang trên hành trình tìm kiếm ý nghĩa của câu nói (tôi yêu em) thông qua công việc viết thư thuê (Auto Memory Doll). Qua những lá thư cảm xúc, cô học cách thấu hiểu cảm xúc con người và hàn gắn những vết thương trong tâm hồn mình.",
+    "image": "https://i.ibb.co/nsy3W73q/Violet.jpg"
+  },
+  {
+    "id": 36,
+    "name": "Asta",
+    "info": "Một cậu bé mồ côi không có ma lực nhưng sở hữu ý chí kiên cường và thể chất phi thường. Cậu sử dụng sức mạnh phản ma pháp từ những thanh kiếm đặc biệt để thực hiện mục tiêu trở thành Vua Pháp Sư tiếp theo.",
+    "image": "https://i.ibb.co/k29pvgmG/Asta.jpg"
+  },
+  {
+    "id": 37,
+    "name": "Saeko Busujima",
+    "info": "Là chủ tịch câu lạc bộ Kendo tại trường trung học Fujimi, nổi bật với vẻ đẹp điềm tĩnh và kỹ năng kiếm thuật thượng thừa trong bối cảnh tận thế zombie. Cô là một chiến binh lạnh lùng, mạnh mẽ và vô cùng đáng tin cậy, nhưng cũng che giấu một khía cạnh tàn bạo, cuồng chiến khi đối đầu với kẻ thù.",
+    "image": "https://i.ibb.co/21Dvxcrk/Saeko.jpg"
+  },
+  {
+    "id": 38,
+    "name": "Baki Hanma",
+    "info": "Là võ sĩ thiên tài tuổi teen với khát khao cháy bỏng vượt qua người cha Yujiro Hanma – sinh vật mạnh nhất Trái Đất. Cậu không ngừng rèn luyện và chiến đấu trong các đấu trường ngầm tàn khốc để nâng cao sức mạnh, đồng thời báo thù cho mẹ mình.",
+    "image": "https://i.ibb.co/B2QqqCvV/baki.jpg"
+  },
+  {
+    "id": 39,
+    "name": "Yujiro Hanma",
+    "info": "Hay còn gọi là Sinh vật mạnh nhất Trái Đất, là một nhân vật phản diện chính vô cùng tàn bạo và bá đạo trong series Baki. Với võ thuật đỉnh cao cùng sức mạnh thể chất vượt xa con người, hắn sẵn sàng giết chóc và coi thường mọi quy tắc để thỏa mãn sự hiếu chiến của mình.",
+    "image": "https://i.ibb.co/XxnN16Wr/Yujiro-Hanma.jpg"
+  },
+  {
+    "id": 40,
+    "name": "Na Tra (Nezha)",
+    "info": "Là nhân vật được sinh ra từ Ma Hoàn, mang sức mạnh hủy diệt kinh người và bị cả thế gian xa lánh. Dù mang bản chất tà ác, cậu vẫn khát khao khẳng định mình và chiến đấu hết mình để bảo vệ gia đình trước sự truy sát của Đông Hải Long Vương.",
+    "image": "https://i.ibb.co/wZCrX7Yw/natra.jpg"
+  },
+  {
+    "id": 41,
+    "name": "Tần Thủy Hoàng (Record of Ragnarok)",
+    "info": "Là vị vua nhân loại kiêu ngạo và bản lĩnh, người đại diện vòng 7 đối đầu với Hades bằng phong thái vua của mọi vị vua. Với kỹ thuật chiến đấu Chi You và khả năng cảm nhận khí/nỗi đau của người khác, ông đã dùng bản lĩnh tuyệt đối để giành chiến thắng vinh quang cho nhân loại.",
+    "image": "https://i.ibb.co/1YwKsd5D/lubo-Ragnarok.jpg"
+  },
+  {
+    "id": 42,
+    "name": "Coach",
+    "info": "Coach là một cựu huấn luyện viên bóng đá trung học tốt bụng, luôn lạc quan và là người trụ cột vững chắc của nhóm trong hành trình sinh tồn. Với vóc dáng đậm đà cùng tình yêu lớn dành cho thức ăn, anh chàng này nổi bật bởi sự hài hước và những câu thoại chửi thề kinh điển khi chiến đấu với lũ xác sống.",
+    "image": "https://i.ibb.co/rKgynBpS/coach.png"
+  },
+  {
+    "id": 43,
+    "name": "Zoey",
+    "info": "Zoey là cô gái trẻ dũng cảm và là một trong bốn người sống sót ban đầu từ phần một, xuất hiện với tư cách khách mời trong Left 4 Dead 2. Cô là một sinh viên điện ảnh đam mê phim kinh dị, nhanh chóng thích nghi thành một chiến binh gan dạ, thông minh trong bối cảnh đại dịch zombie.",
+    "image": "https://i.ibb.co/3YNN2xqx/Zoey.png"
+  },
+  {
+    "id": 44,
+    "name": "Bill",
+    "info": "Bill là một cựu chiến binh dày dặn kinh nghiệm, đóng vai trò thủ lĩnh kiên cường và lạnh lùng của nhóm người sống sót. Ông sẵn sàng hy sinh thân mình trong chiến dịch The Sacrifice để bảo vệ đồng đội khỏi lũ zombie.",
+    "image": "https://i.ibb.co/sJK8s87T/bill.jpg"
+  },
+  {
+    "id": 45,
+    "name": "Ai-chan",
+    "info": "Ai-chan là một nữ sinh trung học nổi bật với ngoại hình xinh xắn, tính cách tươi sáng và vóc dáng đầy đặn. Cô có những cuộc gặp gỡ định mệnh với một nhân viên văn phòng trên chuyến tàu điện mỗi thứ Hai.",
+    "image": "https://i.ibb.co/bgbyB5kF/tawawa.png"
+  },
+  {
+    "id": 46,
+    "name": "GaoRed (Shishi Kakeru)",
+    "info": "Là thủ lĩnh nhiệt huyết của nhóm Chiến đội Bách thú, mang trong mình trái tim nhân hậu của một bác sĩ thú y và linh hồn chiến binh dũng mãnh của Siêu thú Gao Sư Tử. Với ngọn lửa công lý, anh là người kết nối các thành viên và dẫn dắt cả đội đánh bại thế lực hắc ám Orgs.",
+    "image": "https://i.ibb.co/WWxZ0BLS/Hyakujuu-Sentai-Gaoranger.png"
+  },
+  {
+    "id": 47,
+    "name": "Serie Fanart (Frieren)",
+    "info": "Là Đại Pháp sư vĩ đại tộc Elf và là một trong những nhân vật sống lâu nhất lịch sử, sở hữu kiến thức ma thuật vô tận cùng quyền năng chi phối Hiệp hội Pháp sư. Dù mang dáng vẻ nhỏ nhắn, bà được xem là Bà Tổ của các pháp sư thời hiện đại và từng là sư phụ của Flamme.",
+    "image": "https://i.ibb.co/dwy4ScHy/Serie2.png"
+  },
+  {
+    "id": 48,
+    "name": "Frieren Fanart",
+    "info": "Frieren là một nữ pháp sư elf sở hữu tuổi thọ hàng thiên niên kỷ, từng cùng nhóm anh hùng đánh bại Quỷ vương. Sau khi người bạn đồng hành qua đời, cô bắt đầu một chuyến hành trình mới để học cách thấu hiểu cảm xúc con người và trân trọng những khoảnh khắc ngắn ngủi của cuộc sống.",
+    "image": "https://i.ibb.co/NdT3Nstf/Frieren.jpg"
+  },
+  {
+    "id": 49,
+    "name": "Nick",
+    "info": "Nick là một tên tội phạm ranh mãnh và có phần cộc cằn. Dù ban đầu hay phàn nàn và có thái độ đa nghi, anh lại là thành viên đáng tin cậy, gắn kết chặt chẽ với cả đội trong cuộc hành trình sinh tồn.",
+    "image": "https://i.ibb.co/0jhMBT9Z/Nick.jpg"
+  },
+  {
+    "id": 50,
+    "name": "Übel Fanart (Frieren)",
+    "info": "Übel là một nữ pháp sư hạng nhất nguy hiểm và khó lường, nổi bật với tính cách bất cần cùng năng lực ma thuật cho phép cắt đứt mọi thứ cô có thể tưởng tượng. Cô có khả năng thấu cảm và sao chép phép thuật của người khác bằng cách đồng điệu với suy nghĩ của chính mục tiêu đó.",
+    "image": "https://i.ibb.co/r2nGvFjK/Ubel.jpg"
+  },
+  {
+    "id": 51,
+    "name": "Maka Albarn",
+    "info": "Là một meister sử dụng vũ khí hệ lưỡi hái với tính cách dũng cảm, chăm chỉ và có tinh thần trách nhiệm cao. Cô luôn sát cánh cùng cộng sự Soul Eater Evans để tiêu diệt ác linh và bảo vệ thế giới, đồng thời không ngừng phấn đấu để vượt qua thành tích của người cha mình.",
+    "image": "https://i.ibb.co/9mMLmzBp/Maka-Albarn.jpg"
+  },
+  {
+    "id": 52,
+    "name": "Ichigo Kurosaki (Vasto Lorde)",
+    "info": "Ichigo dạng Vasto Lorde (Hollow hoàn chỉnh) là trạng thái cuồng nộ vô thức khi Hollow bên trong chiếm quyền kiểm soát cơ thể cậu để bảo vệ mạng sống. Với sức mạnh áp đảo hoàn toàn, cậu chiến đấu như một ác thú không khoan nhượng, sở hữu tốc độ kinh hoàng cùng khả năng bắn đòn Cero hủy diệt.",
+    "image": "https://i.ibb.co/zHrx982h/Vasto-Lorde.jpg"
+  },
+  {
+    "id": 53,
+    "name": "Ichigo Kurosaki (Mugetsu)",
+    "info": "Dạng Mugetsu là trạng thái Final Getsuga Tensho đầy sức mạnh mà Ichigo đạt được, nơi bản thân cậu hóa thành đòn tấn công với mái tóc đen dài và cơ thể quấn băng đen. Ở hình thái này, linh lực của cậu đạt đến cảnh giới áp đảo hoàn toàn, giúp cậu tung ra nhát chém Mugetsu để đánh bại Sousuke Aizen nhưng phải đánh đổi bằng việc vĩnh viễn mất đi toàn bộ sức mạnh Thần Chết.",
+    "image": "https://i.ibb.co/N6Tp79W8/Mugetsu.png"
+  },
+  {
+    "id": 54,
+    "name": "Cyberpunk Girl",
+    "info": "Một chiến binh trong bộ giáp máy vàng, hòa quyện giữa con người và công nghệ. Cô ấy là biểu tượng của sức mạnh lạnh lùng nhưng vẫn mang khát vọng tự do trong thế giới tương lai.",
+    "image": "https://i.ibb.co/mV18GzDV/Cyberpunk-Girl.jpg"
+  },
+  {
+    "id": 55,
+    "name": "Triệu Vân",
+    "info": "Triệu Vân là một trong những vị danh tướng kiệt xuất và trung kiên nhất thời Tam Quốc, người đã lập vô số chiến công hiển hách góp phần khai lập nhà Thục Hán. Ông được người đời ca ngợi là hiện thân của bậc mãnh tướng dũng mãnh, trí dũng song toàn và có tấm lòng tận trung vì nước.",
+    "image": "https://i.ibb.co/bM9gnxYs/Trieu-Van.png"
+  },
+  {
+    "id": 56,
+    "name": "Thánh Gióng",
+    "info": "Thánh Gióng là một trong *Tứ bất tử* trong tín ngưỡng dân gian, nổi tiếng với truyền thuyết được sinh ra kỳ lạ vào thời Hùng Vương. Chàng chính là biểu tượng rực rỡ cho lòng yêu nước, sức mạnh vươn cao và tinh thần quật cường của dân tộc Việt Nam trong công cuộc đánh đuổi giặc ngoại xâm.",
+    "image": "https://i.ibb.co/SD9sk1XC/Thanh-Giong.png"
+  },
+  {
+    "id": 57,
+    "name": "Sanguinius",
+    "info": "Sanguinius là Primarch của quân đoàn Blood Angels, được tôn vinh là *Đại thiên thần* nhờ đôi cánh trắng muốt và sức mạnh siêu phàm trong vũ trụ. Ông là hiện thân của sự cao thượng và lòng dũng cảm, nhưng cuối cùng đã hy sinh anh dũng dưới tay Horus để bảo vệ Hoàng đế.",
+    "image": "https://i.ibb.co/8nvK0nMJ/Sanguinius.jpg"
+  },
+  {
+    "id": 58,
+    "name": "Genryūsai Shigekuni Yamamoto",
+    "info": "Genryūsai Shigekuni Yamamoto là người sáng lập kiêm Tổng Đội trưởng đầu tiên của lực lượng Gotei 13. Ông là một Tử thần (Shinigami) vĩ đại, sở hữu sức mạnh tâm linh áp đảo cùng khả năng điều khiển ngọn lửa hủy diệt mạnh nhất Soul Society.",
+    "image": "https://i.ibb.co/23NQ3N3s/Yamamoto.jpg"
+  }
+]
