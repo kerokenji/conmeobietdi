@@ -1,11 +1,13 @@
 let namesData = {};
 let statsData = {};
+let playtimeData = {}; // Biến lưu dữ liệu phút chơi từ last_week.json
 
 const searchInput = document.getElementById('search-input');
 const autocompleteList = document.getElementById('autocomplete-list');
 const playerProfile = document.getElementById('player-profile');
 const playerNameEl = document.getElementById('player-name');
 const playerIdEl = document.getElementById('player-id');
+const playerPlaytimeEl = document.getElementById('player-playtime');
 const weekInfoEl = document.getElementById('week-info');
 
 // Elements hiển thị chỉ số
@@ -14,7 +16,7 @@ const statShotted = document.getElementById('stat-shotted');
 const statKills = document.getElementById('stat-kills');
 const statIncaps = document.getElementById('stat-incaps');
 
-// Hàm hỗ trợ vô hiệu hóa ký tự đặc biệt trong Regex (Ngoặc, chấm, sao,...)
+// Hàm hỗ trợ escape các ký tự đặc biệt trong Regex
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
@@ -29,16 +31,18 @@ function escapeHTML(str) {
         .replace(/'/g, '&#039;');
 }
 
-// 1. Tải dữ liệu từ 2 file JSON trong thư mục data/
+// 1. Tải dữ liệu từ 3 file JSON trong thư mục data/
 async function loadData() {
     try {
-        const [namesRes, statsRes] = await Promise.all([
-            fetch('./mappings.json'),
-            fetch('./data/ff_stats_current.json')
+        const [namesRes, statsRes, playtimeRes] = await Promise.all([
+            fetch('./data/mappings.json'),
+            fetch('./data/ff_stats_current.json'),
+            fetch('./data/last_week.json')
         ]);
 
         namesData = await namesRes.json();
         const fullStats = await statsRes.json();
+        playtimeData = await playtimeRes.json();
         
         statsData = fullStats.players || {};
         
@@ -64,7 +68,7 @@ searchInput.addEventListener('input', function () {
         return;
     }
 
-    // Lọc danh sách tên (Hỗ trợ tốt Tiếng Trung, Ả Rập, Unicode & Ký tự đặc biệt)
+    // Lọc danh sách tên (Hỗ trợ Unicode, tiếng Trung, Ả Rập & Ký tự đặc biệt)
     const matchedNames = Object.keys(namesData).filter(name => 
         name.toLowerCase().includes(query)
     );
@@ -99,7 +103,7 @@ searchInput.addEventListener('input', function () {
     autocompleteList.classList.remove('hidden');
 });
 
-// Hide dropdown khi click ra ngoài thanh tìm kiếm
+// Hide dropdown khi click ra ngoài
 document.addEventListener('click', function (e) {
     if (!searchInput.contains(e.target) && !autocompleteList.contains(e.target)) {
         autocompleteList.classList.add('hidden');
@@ -119,9 +123,26 @@ function selectPlayer(name) {
         incaps_dealt: 0
     };
 
+    // Lấy số phút chơi từ last_week.json
+    const minutes = playtimeData[playerId] || 0;
+
     // Render thông tin người chơi
     playerNameEl.textContent = name;
     playerIdEl.textContent = `ID: ${playerId}`;
+    
+    // Hiển thị phút chơi (có chuyển đổi thêm giờ cho trực quan)
+    if (playerPlaytimeEl) {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        let timeFormatted = `${minutes} phút`;
+        
+        if (hours > 0) {
+            timeFormatted += ` (${hours}h ${remainingMinutes}m)`;
+        }
+        
+        playerPlaytimeEl.textContent = `⏱️ Thời gian chơi: ${timeFormatted}`;
+    }
+
     playerProfile.classList.remove('hidden');
 
     // Animate đếm số mượt mà
