@@ -140,7 +140,7 @@ function selectPlayer(name) {
             timeFormatted += ` (${hours}h ${remainingMinutes}m)`;
         }
         
-        playerPlaytimeEl.textContent = `⏱️ Thời gian chơi: ${timeFormatted}`;
+        playerPlaytimeEl.textContent = `⏱️ Thời gian chơi tuần trước: ${timeFormatted}`;
     }
 
     playerProfile.classList.remove('hidden');
