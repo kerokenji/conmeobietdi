@@ -35,7 +35,7 @@ function escapeHTML(str) {
 async function loadData() {
     try {
         const [namesRes, statsRes, playtimeRes] = await Promise.all([
-            fetch('./data/mappings.json'),
+            fetch('./mappings.json'),
             fetch('./data/ff_stats_current.json'),
             fetch('./data/last_week.json')
         ]);
