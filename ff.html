@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Stats Tracker - Autumn Edition</title>
+    <title>Player Stats Tracker</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Font -->
@@ -11,40 +12,36 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #1a110b;
-            color: #fef3c7;
+            background-color: #0b0f19;
+            color: #f3f4f6;
         }
         .glass-card {
-            background: rgba(43, 27, 18, 0.75);
+            background: rgba(17, 24, 39, 0.7);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(245, 158, 11, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .glass-input {
-            background: rgba(58, 36, 23, 0.6);
-            border: 1px solid rgba(245, 158, 11, 0.25);
+            background: rgba(31, 41, 55, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
         .glass-input:focus {
-            border-color: #f59e0b;
-            box-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
+            border-color: #6366f1;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-start p-4 sm:p-8 relative overflow-x-hidden">
 
-    <!-- Autumn Background Glows -->
-    <div class="absolute top-[-10%] left-[15%] w-[500px] h-[500px] bg-amber-600/20 rounded-full blur-[130px] pointer-events-none"></div>
-    <div class="absolute top-[35%] right-[10%] w-[450px] h-[450px] bg-orange-600/20 rounded-full blur-[130px] pointer-events-none"></div>
-    <div class="absolute bottom-[10%] left-[25%] w-[400px] h-[400px] bg-yellow-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+    <!-- Background Glows -->
+    <div class="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute top-[40%] right-[10%] w-[400px] h-[400px] bg-rose-600/15 rounded-full blur-[120px] pointer-events-none"></div>
 
     <!-- Container Header -->
-    <header class="text-center my-8 z-10 flex flex-col items-center">
-        <div class="inline-block px-3.5 py-1 mb-3 text-xs font-semibold tracking-wider text-amber-300 uppercase bg-amber-950/70 rounded-full border border-amber-600/40">
-            🍁 Autumn Edition 📚
-        </div>
-        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-amber-300 via-orange-400 to-yellow-500 bg-clip-text text-transparent">
+    <header class="text-center my-8 z-10">
+        <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-300 to-rose-400 bg-clip-text text-transparent">
             <a href="https://conmeobietdi.vercel.app/" target="_blank">STATS TRACKER</a>
         </h1>
-        <p class="text-amber-200/70 text-sm sm:text-base mt-2" id="week-info">Đang tải dữ liệu tuần...</p>
+        <p class="text-gray-400 text-sm sm:text-base mt-2" id="week-info">Đang tải dữ liệu tuần...</p>
     </header>
 
     <!-- Main Content -->
@@ -57,9 +54,9 @@
                     id="search-input" 
                     placeholder="Nhập tên người chơi để tìm kiếm..." 
                     autocomplete="off"
-                    class="w-full px-5 py-4 rounded-2xl glass-input text-amber-100 placeholder-amber-400/50 outline-none transition-all duration-300 text-lg"
+                    class="w-full px-5 py-4 rounded-2xl glass-input text-white placeholder-gray-400 outline-none transition-all duration-300 text-lg"
                 >
-                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-amber-400">
+                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
                     🔍
                 </span>
             </div>
@@ -67,59 +64,60 @@
             <!-- Auto-complete Dropdown -->
             <ul 
                 id="autocomplete-list" 
-                class="hidden absolute left-0 right-0 top-full mt-2 glass-card rounded-2xl max-h-60 overflow-y-auto z-50 divide-y divide-amber-900/40 shadow-2xl transition-all"
+                class="hidden absolute left-0 right-0 top-full mt-2 glass-card rounded-2xl max-h-60 overflow-y-auto z-50 divide-y divide-gray-800 shadow-2xl transition-all"
             >
             </ul>
         </div>
 
         <!-- Selected Player Card Info -->
         <div id="player-profile" class="hidden mb-6 text-center">
-            <h2 id="player-name" class="text-3xl font-bold text-amber-100 mb-1">--</h2>
-            <p id="player-id" class="text-xs text-amber-400/70 font-mono">ID: --</p>
-            <p id="player-playtime" class="text-xs text-amber-300 font-medium mt-1">⏱️ Thời gian chơi tuần trước: -- phút</p>
+            <h2 id="player-name" class="text-3xl font-bold text-white mb-1">--</h2>
+            <p id="player-id" class="text-xs text-gray-500 font-mono">ID: --</p>
+            <!-- Thêm thẻ hiển thị thời gian chơi bên dưới ID -->
+            <p id="player-playtime" class="text-xs text-indigo-300 font-medium mt-1">⏱️ Thời gian chơi tuần trước: -- phút</p>
         </div>
 
         <!-- Stats Display Grid -->
         <div id="stats-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
             <!-- Shot (Friendly Fire Dealt) -->
-            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-amber-400/60 transition-all">
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-amber-500/50 transition-all">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Sát Thương Gây Ra</span>
-                    <span class="text-xl">🍁</span>
+                    <span class="text-xl">🎯</span>
                 </div>
-                <div id="stat-shot" class="text-4xl font-black text-amber-50 my-1">0</div>
-                <p class="text-xs text-amber-200/60">Dame friendly fire gây ra cho đồng đội (Shot)</p>
+                <div id="stat-shot" class="text-4xl font-black text-white my-1">0</div>
+                <p class="text-xs text-gray-400">Dame friendly fire gây ra cho đồng đội (Shot)</p>
             </div>
 
             <!-- Shotted (Friendly Fire Received) -->
-            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-orange-400/60 transition-all">
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-rose-500/50 transition-all">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-orange-400">Sát Thương Nhận Vào</span>
-                    <span class="text-xl">🍂</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Sát Thương Nhận Vào</span>
+                    <span class="text-xl">🛡️</span>
                 </div>
-                <div id="stat-shotted" class="text-4xl font-black text-amber-50 my-1">0</div>
-                <p class="text-xs text-amber-200/60">Dame friendly fire bị nhận vào (Shotted)</p>
+                <div id="stat-shotted" class="text-4xl font-black text-white my-1">0</div>
+                <p class="text-xs text-gray-400">Dame friendly fire bị nhận vào (Shotted)</p>
             </div>
 
             <!-- Kills Dealt -->
-            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-red-400/60 transition-all">
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-red-500/50 transition-all">
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-bold uppercase tracking-wider text-red-400">Đồng Đội Bị Giết</span>
-                    <span class="text-xl">🎒</span>
+                    <span class="text-xl">💀</span>
                 </div>
-                <div id="stat-kills" class="text-4xl font-black text-amber-50 my-1">0</div>
-                <p class="text-xs text-amber-200/60">Số đồng đội đã bị giết (Kills Dealt)</p>
+                <div id="stat-kills" class="text-4xl font-black text-white my-1">0</div>
+                <p class="text-xs text-gray-400">Số đồng đội đã bị giết (Kills Dealt)</p>
             </div>
 
             <!-- Incaps Dealt -->
-            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-yellow-500/60 transition-all">
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-between hover:border-orange-500/50 transition-all">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-yellow-400">Đồng Đội Bị Incap</span>
-                    <span class="text-xl">📚</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-orange-400">Đồng Đội Bị Incap</span>
+                    <span class="text-xl">💥</span>
                 </div>
-                <div id="stat-incaps" class="text-4xl font-black text-amber-50 my-1">0</div>
-                <p class="text-xs text-amber-200/60">Số đồng đội bị bắn gục (Incaps Dealt)</p>
+                <div id="stat-incaps" class="text-4xl font-black text-white my-1">0</div>
+                <p class="text-xs text-gray-400">Số đồng đội bị bắn gục (Incaps Dealt)</p>
             </div>
 
         </div>
@@ -127,8 +125,8 @@
 
     <script src="scriptff.js"></script>
 
-    <div style="margin-top: 20px; color: #b45309; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 40px;">
-        <img src="https://count.getloli.com/get/@conmeobietdi?theme=moebooru" alt="kero-counter" style="height: 50px; filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.6));">
+    <div style="margin-top: 20px; color: #888; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 8px; padding-bottom: 40px;">
+        <img src="https://count.getloli.com/get/@conmeobietdi?theme=moebooru" alt="kero-counter" style="height: 50px; filter: drop-shadow(0 0 5px rgba(255, 77, 77, 0.5));">
     </div>
 </body>
 </html>
