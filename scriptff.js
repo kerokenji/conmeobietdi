@@ -1,7 +1,7 @@
-let nameToIdMap = new Map(); // Lưu map Tên -> Base ID (số xxx)
-let allNames = [];          // Danh sách tất cả tên ingame phục vụ cho autocomplete
+let nameToInfoMap = new Map(); // Lưu map Tên -> { steamId, discordId }
+let allNames = [];             // Danh sách tất cả tên ingame cho autocomplete
 let statsData = {};
-let playtimeData = {};      // Biến lưu dữ liệu phút chơi từ last_week.json
+let playtimeData = {};         // Biến lưu dữ liệu phút chơi từ last_week.json
 
 const searchInput = document.getElementById('search-input');
 const autocompleteList = document.getElementById('autocomplete-list');
@@ -32,53 +32,43 @@ function escapeHTML(str) {
         .replace(/'/g, '&#039;');
 }
 
-// Hàm tách lấy chuỗi số ID cuối cùng (bỏ STEAM_1:0:, STEAM_0:1:,...)
-function extractIdTail(idStr) {
-    if (!idStr) return '';
-    const str = String(idStr).trim();
-    // Lấy chuỗi chữ số ở cuối cùng của ID
-    const match = str.match(/\d+$/);
-    if (match) return match[0];
-    
-    // Dự phòng cắt theo dấu ':' nếu định dạng lạ
-    return str.includes(':') ? str.split(':').pop().trim() : str;
-}
-
-// Hàm hỗ trợ phân tích mappings.json
+// Phân tích mappings.json: Trích xuất cặp (Steam ID, Discord ID, Tên)
 function parseMappingsData(rawMappings) {
     const map = new Map();
 
-    const addMapping = (id, namesList) => {
-        const cleanId = extractIdTail(id);
-        if (!cleanId) return;
-
-        namesList.forEach(n => {
-            if (typeof n === 'string' && n.trim()) {
-                map.set(n.trim(), cleanId);
-            }
-        });
+    const addMapping = (name, steamId, discordId) => {
+        if (typeof name === 'string' && name.trim()) {
+            map.set(name.trim(), {
+                steamId: steamId ? String(steamId).trim() : '',
+                discordId: discordId ? String(discordId).trim() : ''
+            });
+        }
     };
 
     if (Array.isArray(rawMappings)) {
         rawMappings.forEach(item => {
-            const id = item.id || item.playerId || item.steam_id || item.steamid;
+            const steamId = item.steam_id || item.steamId || item.steam || item.id || '';
+            const discordId = item.discord_id || item.discordId || item.discord || '';
             const names = item.names || item.aliases || (item.name ? [item.name] : []);
-            addMapping(id, names);
+            names.forEach(n => addMapping(n, steamId, discordId));
         });
     } else if (typeof rawMappings === 'object' && rawMappings !== null) {
         Object.entries(rawMappings).forEach(([key, val]) => {
-            if (typeof val === 'string') {
-                if (key.includes(':') || /^\d+$/.test(key)) {
-                    map.set(val.trim(), extractIdTail(key));
-                } else {
-                    map.set(key.trim(), extractIdTail(val));
-                }
-            } else if (Array.isArray(val)) {
-                addMapping(key, val);
-            } else if (typeof val === 'object' && val !== null) {
-                const id = val.id || val.playerId || val.steam_id || key;
-                const namesList = [];
+            let steamId = '';
+            let discordId = '';
 
+            // Phân loại key là Discord ID (chuỗi 17-19 chữ số) hay Steam ID
+            if (/^\d{17,19}$/.test(key)) {
+                discordId = key;
+            } else if (key.startsWith('STEAM_') || key.startsWith('7656')) {
+                steamId = key;
+            }
+
+            if (typeof val === 'object' && val !== null) {
+                discordId = val.discord_id || val.discordId || val.discord || discordId;
+                steamId = val.steam_id || val.steamId || val.steam || steamId;
+
+                const namesList = [];
                 if (typeof val.name === 'string') namesList.push(val.name);
                 if (typeof val.ingame === 'string') namesList.push(val.ingame);
                 if (Array.isArray(val.names)) namesList.push(...val.names);
@@ -87,14 +77,20 @@ function parseMappingsData(rawMappings) {
 
                 if (namesList.length === 0) {
                     Object.values(val).forEach(v => {
-                        if (typeof v === 'string' && extractIdTail(v) !== extractIdTail(id)) {
+                        if (typeof v === 'string' && v !== steamId && v !== discordId) {
                             namesList.push(v);
                         } else if (Array.isArray(v)) {
                             namesList.push(...v);
                         }
                     });
                 }
-                addMapping(id, namesList);
+                namesList.forEach(n => addMapping(n, steamId, discordId));
+            } else if (Array.isArray(val)) {
+                val.forEach(n => addMapping(n, steamId, discordId));
+            } else if (typeof val === 'string') {
+                if (val.startsWith('STEAM_')) steamId = val;
+                else if (/^\d{17,19}$/.test(val)) discordId = val;
+                else addMapping(val, steamId, discordId);
             }
         });
     }
@@ -102,33 +98,29 @@ function parseMappingsData(rawMappings) {
     return map;
 }
 
-// Hàm tìm kiếm dữ liệu theo chuỗi số ID duy nhất (Tail ID)
-function findDataById(container, targetTailId) {
-    if (!container || !targetTailId) return null;
-
+// Truy vấn dữ liệu từ JSON theo Discord ID
+function getValByDiscordId(container, discordId) {
+    if (!container || !discordId) return null;
     const data = container.players || container;
+    const strId = String(discordId).trim();
 
-    // 1. Trường hợp data dạng mảng Array: [{ id: "STEAM_1:0:xxx", ... }]
-    if (Array.isArray(data)) {
-        return data.find(item => {
-            const itemId = item.id || item.playerId || item.steam_id || item.steamid;
-            return extractIdTail(itemId) === targetTailId;
-        }) || null;
-    }
+    if (data[strId] !== undefined) return data[strId];
 
-    // 2. Trường hợp data dạng Object: { "STEAM_1:0:xxx": ... }
-    if (typeof data === 'object') {
+    if (typeof data === 'object' && !Array.isArray(data)) {
         for (const [key, val] of Object.entries(data)) {
-            if (extractIdTail(key) === targetTailId) {
-                return val;
-            }
+            if (String(key).trim() === strId) return val;
         }
+    } else if (Array.isArray(data)) {
+        return data.find(item => {
+            const itemId = item.discord_id || item.discordId || item.id;
+            return String(itemId).trim() === strId;
+        }) || null;
     }
 
     return null;
 }
 
-// 1. Tải dữ liệu từ 3 file JSON
+// 1. Tải dữ liệu từ các file JSON
 async function loadData() {
     try {
         const [namesRes, statsRes, playtimeRes] = await Promise.all([
@@ -141,8 +133,8 @@ async function loadData() {
         const fullStats = await statsRes.json();
         playtimeData = await playtimeRes.json();
         
-        nameToIdMap = parseMappingsData(rawNamesData);
-        allNames = Array.from(nameToIdMap.keys());
+        nameToInfoMap = parseMappingsData(rawNamesData);
+        allNames = Array.from(nameToInfoMap.keys());
 
         statsData = fullStats;
         
@@ -213,14 +205,16 @@ function selectPlayer(name) {
     searchInput.value = name;
     autocompleteList.classList.add('hidden');
 
-    const tailId = nameToIdMap.get(name);
-    if (!tailId) {
-        console.error('Không tìm thấy ID người chơi:', name);
+    const playerInfo = nameToInfoMap.get(name);
+    if (!playerInfo) {
+        console.error('Không tìm thấy thông tin người chơi:', name);
         return;
     }
 
-    // Tra cứu Stats theo tailId
-    const rawStats = findDataById(statsData, tailId);
+    const { steamId, discordId } = playerInfo;
+
+    // Tra cứu Stats & Playtime bằng Discord ID
+    const rawStats = getValByDiscordId(statsData, discordId);
     const playerStats = (typeof rawStats === 'object' && rawStats !== null) ? rawStats : {
         shot: 0,
         shotted: 0,
@@ -228,8 +222,7 @@ function selectPlayer(name) {
         incaps_dealt: 0
     };
 
-    // Tra cứu Playtime theo tailId
-    const rawPlaytime = findDataById(playtimeData, tailId);
+    const rawPlaytime = getValByDiscordId(playtimeData, discordId);
     let minutes = 0;
     if (typeof rawPlaytime === 'number') {
         minutes = rawPlaytime;
@@ -239,9 +232,9 @@ function selectPlayer(name) {
         minutes = parseInt(rawPlaytime, 10) || 0;
     }
 
-    // Render thông tin người chơi
+    // Render thông tin người chơi (Giao diện hiển thị Steam ID)
     playerNameEl.textContent = name;
-    playerIdEl.textContent = `ID: ${tailId}`;
+    playerIdEl.textContent = `ID: ${steamId || discordId || 'N/A'}`;
     
     if (playerPlaytimeEl) {
         const hours = Math.floor(minutes / 60);
