@@ -32,12 +32,11 @@ function escapeHTML(str) {
         .replace(/'/g, '&#039;');
 }
 
-// Hàm hỗ trợ phân tích mappings.json (hỗ trợ tên nằm bên trong/dưới ID và cấu trúc cũ)
+// Hàm hỗ trợ phân tích mappings.json
 function parseMappingsData(rawMappings) {
     const map = new Map();
 
     if (Array.isArray(rawMappings)) {
-        // Cấu trúc dạng mảng: [{ id: "STEAM_...", names: ["Name1", "Name2"] }, ...]
         rawMappings.forEach(item => {
             const id = item.id || item.playerId || item.steam_id || item.steamid;
             if (!id) return;
@@ -50,17 +49,14 @@ function parseMappingsData(rawMappings) {
             });
         });
     } else if (typeof rawMappings === 'object' && rawMappings !== null) {
-        // Cấu trúc Object
         Object.entries(rawMappings).forEach(([key, val]) => {
             if (typeof val === 'string') {
-                // Chuỗi đơn: Kiểm tra key hay val là ID
                 if (key.startsWith('STEAM_') || /^\d{17}$/.test(key)) {
                     map.set(val.trim(), key);
                 } else {
                     map.set(key.trim(), val);
                 }
             } else if (Array.isArray(val)) {
-                // Cấu trúc mới: { "STEAM_ID": ["Tên 1", "Tên 2", ...] }
                 const id = key;
                 val.forEach(n => {
                     if (typeof n === 'string' && n.trim()) {
@@ -68,7 +64,6 @@ function parseMappingsData(rawMappings) {
                     }
                 });
             } else if (typeof val === 'object' && val !== null) {
-                // Cấu trúc mới: { "STEAM_ID": { name: "Tên", aliases: [...], ingame: [...] } }
                 const id = val.id || val.playerId || val.steam_id || key;
                 const namesList = [];
 
@@ -78,7 +73,6 @@ function parseMappingsData(rawMappings) {
                 if (Array.isArray(val.aliases)) namesList.push(...val.aliases);
                 if (Array.isArray(val.ingame_names)) namesList.push(...val.ingame_names);
 
-                // Nếu không có field tên chuẩn, quét toàn bộ giá trị chuỗi/mảng bên trong
                 if (namesList.length === 0) {
                     Object.values(val).forEach(v => {
                         if (typeof v === 'string' && v !== id) namesList.push(v);
@@ -98,7 +92,45 @@ function parseMappingsData(rawMappings) {
     return map;
 }
 
-// 1. Tải dữ liệu từ 3 file JSON trong thư mục data/
+// Hàm tìm kiếm dữ liệu linh hoạt theo ID (Tự chuẩn hóa STEAM_0 vs STEAM_1, hoa/thường, Mảng vs Object)
+function findDataById(container, targetId) {
+    if (!container || !targetId) return null;
+
+    // Lấy đối tượng dữ liệu thực sự (xử lý bọc trong key "players" hoặc không)
+    const data = container.players || container;
+    const cleanTarget = String(targetId).trim().toLowerCase();
+    const normTarget = cleanTarget.replace(/^steam_[01]:/, '');
+
+    // 1. Nếu data là Array: [{ id: "...", ... }]
+    if (Array.isArray(data)) {
+        return data.find(item => {
+            const itemSteam = String(item.id || item.playerId || item.steam_id || item.steamid || '').trim().toLowerCase();
+            const normItem = itemSteam.replace(/^steam_[01]:/, '');
+            return itemSteam === cleanTarget || (normTarget && normItem === normTarget);
+        }) || null;
+    }
+
+    // 2. Nếu data là Object: { "STEAM_...": ... }
+    if (typeof data === 'object') {
+        // Khớp chính xác key
+        if (data[targetId] !== undefined) return data[targetId];
+
+        // Quét tìm key khớp mềm
+        for (const [key, val] of Object.entries(data)) {
+            const cleanKey = String(key).trim().toLowerCase();
+            if (cleanKey === cleanTarget) return val;
+
+            const normKey = cleanKey.replace(/^steam_[01]:/, '');
+            if (normTarget && normKey === normTarget) {
+                return val;
+            }
+        }
+    }
+
+    return null;
+}
+
+// 1. Tải dữ liệu từ 3 file JSON
 async function loadData() {
     try {
         const [namesRes, statsRes, playtimeRes] = await Promise.all([
@@ -111,11 +143,10 @@ async function loadData() {
         const fullStats = await statsRes.json();
         playtimeData = await playtimeRes.json();
         
-        // Tự động phân tích mappings.json và trích xuất danh sách tên
         nameToIdMap = parseMappingsData(rawNamesData);
         allNames = Array.from(nameToIdMap.keys());
 
-        statsData = fullStats.players || {};
+        statsData = fullStats;
         
         if (fullStats.meta && fullStats.meta.week) {
             weekInfoEl.textContent = `Dữ liệu cập nhật: Tuần ${fullStats.meta.week}`;
@@ -139,7 +170,6 @@ searchInput.addEventListener('input', function () {
         return;
     }
 
-    // Lọc danh sách tên (Hỗ trợ Unicode, tiếng Trung, Ả Rập & Ký tự đặc biệt)
     const matchedNames = allNames.filter(name => 
         name.toLowerCase().includes(query)
     );
@@ -157,7 +187,6 @@ searchInput.addEventListener('input', function () {
             const li = document.createElement('li');
             li.className = 'px-5 py-3 cursor-pointer hover:bg-indigo-600/30 transition-colors flex justify-between items-center';
             
-            // Safe Highlight ký tự khớp
             const safeName = escapeHTML(name);
             const highlightedName = safeName.replace(reg, '<span class="text-indigo-400 font-bold">$1</span>');
 
@@ -186,28 +215,36 @@ function selectPlayer(name) {
     searchInput.value = name;
     autocompleteList.classList.add('hidden');
 
-    // Tra cứu PlayerID từ Map đã tạo
     const playerId = nameToIdMap.get(name);
     if (!playerId) {
         console.error('Không tìm thấy ID người chơi:', name);
         return;
     }
 
-    const playerStats = statsData[playerId] || {
+    // Tra cứu Stats theo ID
+    const rawStats = findDataById(statsData, playerId);
+    const playerStats = (typeof rawStats === 'object' && rawStats !== null) ? rawStats : {
         shot: 0,
         shotted: 0,
         kills_dealt: 0,
         incaps_dealt: 0
     };
 
-    // Lấy số phút chơi từ last_week.json
-    const minutes = playtimeData[playerId] || 0;
+    // Tra cứu Playtime theo ID
+    const rawPlaytime = findDataById(playtimeData, playerId);
+    let minutes = 0;
+    if (typeof rawPlaytime === 'number') {
+        minutes = rawPlaytime;
+    } else if (typeof rawPlaytime === 'object' && rawPlaytime !== null) {
+        minutes = rawPlaytime.minutes || rawPlaytime.playtime || rawPlaytime.time || 0;
+    } else if (typeof rawPlaytime === 'string') {
+        minutes = parseInt(rawPlaytime, 10) || 0;
+    }
 
     // Render thông tin người chơi
     playerNameEl.textContent = name;
     playerIdEl.textContent = `ID: ${playerId}`;
     
-    // Hiển thị phút chơi (có chuyển đổi thêm giờ cho trực quan)
     if (playerPlaytimeEl) {
         const hours = Math.floor(minutes / 60);
         const remainingMinutes = minutes % 60;
@@ -222,16 +259,16 @@ function selectPlayer(name) {
 
     playerProfile.classList.remove('hidden');
 
-    // Animate đếm số mượt mà
-    animateNumber(statShot, playerStats.shot || 0);
-    animateNumber(statShotted, playerStats.shotted || 0);
-    animateNumber(statKills, playerStats.kills_dealt || 0);
-    animateNumber(statIncaps, playerStats.incaps_dealt || 0);
+    // Animate đếm số
+    animateNumber(statShot, playerStats.shot || playerStats.shots || 0);
+    animateNumber(statShotted, playerStats.shotted || playerStats.shots_received || 0);
+    animateNumber(statKills, playerStats.kills_dealt || playerStats.kills || 0);
+    animateNumber(statIncaps, playerStats.incaps_dealt || playerStats.incaps || 0);
 }
 
 // Hàm hỗ trợ hiệu ứng nhảy số
 function animateNumber(element, targetValue) {
-    const duration = 500; // ms
+    const duration = 500;
     const startTime = performance.now();
 
     function update(currentTime) {
