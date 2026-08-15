@@ -1,288 +1,178 @@
-/**
- * scriptff.js - Flexible Stat Tracker & Player Mapping Script for ff_stats.html
- * 
- * Tự động ánh xạ và tìm kiếm người chơi theo:
- * 1. SteamID (SteamID2, SteamID3, SteamID64)
- * 2. Discord ID
- * 3. Tên Ingame (Name, Aliases, Nicknames)
- */
+let namesData = {};
+let statsData = {};
+let playtimeData = {}; // Biến lưu dữ liệu phút chơi từ last_week.json
 
-(function () {
-  'use strict';
+const searchInput = document.getElementById('search-input');
+const autocompleteList = document.getElementById('autocomplete-list');
+const playerProfile = document.getElementById('player-profile');
+const playerNameEl = document.getElementById('player-name');
+const playerIdEl = document.getElementById('player-id');
+const playerPlaytimeEl = document.getElementById('player-playtime');
+const weekInfoEl = document.getElementById('week-info');
 
-  // Quản lý trạng thái ứng dụng
-  const state = {
-    mappings: [],       // Danh sách player mapping đã được chuẩn hóa
-    statsData: [],      // Dữ liệu chỉ số Friendly Fire / Gameplay stats
-    activeTarget: null, // Player đang được chọn/hiển thị
-  };
+// Elements hiển thị chỉ số
+const statShot = document.getElementById('stat-shot');
+const statShotted = document.getElementById('stat-shotted');
+const statKills = document.getElementById('stat-kills');
+const statIncaps = document.getElementById('stat-incaps');
 
-  /**
-   * 1. HÀM CHUẨN HÓA DỮ LIỆU MAPPING
-   * Tự động đọc mọi cấu trúc mapping JSON (Array hoặc Object)
-   */
-  function normalizeMappings(rawMappings) {
-    if (!rawMappings) return [];
-    
-    let items = [];
-    if (Array.isArray(rawMappings)) {
-      items = rawMappings;
-    } else if (typeof rawMappings === 'object') {
-      // Nếu mapping là object dạng key-value { "steamid_or_key": { ... } }
-      items = Object.entries(rawMappings).map(([key, val]) => {
-        if (typeof val === 'object' && val !== null) {
-          return { keyId: key, ...val };
-        }
-        return { keyId: key, name: String(val) };
-      });
-    }
+// Hàm hỗ trợ escape các ký tự đặc biệt trong Regex
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
-    return items.map((item, index) => {
-      // 1. Trích xuất SteamID
-      const rawSteam = item.steamId || item.steamid || item.steam_id || item.steamID64 || item.steam64 || item.keyId || '';
-      const steamIds = Array.isArray(rawSteam) 
-        ? rawSteam.map(s => String(s).trim()) 
-        : [String(rawSteam).trim()].filter(Boolean);
+// Hàm hỗ trợ escape HTML tránh vỡ giao diện nếu tên chứa ký tự < > &
+function escapeHTML(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
 
-      // 2. Trích xuất Discord ID
-      const discordId = String(item.discordId || item.discord_id || item.discord || item.discordID || '').trim();
-
-      // 3. Trích xuất Tên In-game & Biệt danh
-      let names = [];
-      if (item.ingameNames && Array.isArray(item.ingameNames)) {
-        names = item.ingameNames;
-      } else if (item.names && Array.isArray(item.names)) {
-        names = item.names;
-      } else if (item.aliases && Array.isArray(item.aliases)) {
-        names = item.aliases;
-      } else {
-        const singleName = item.name || item.ingameName || item.ingame_name || item.username || item.player_name;
-        if (singleName) names.push(singleName);
-      }
-      
-      names = names.map(n => String(n).trim()).filter(Boolean);
-      const primaryName = names[0] || item.keyId || `Player #${index + 1}`;
-
-      return {
-        id: item.id || `player_${index}`,
-        primaryName: primaryName,
-        steamIds: steamIds,
-        discordId: discordId,
-        names: names,
-        raw: item
-      };
-    });
-  }
-
-  /**
-   * 2. HÀM TÌM KIẾM TARGET THEO STEAM ID, DISCORD ID HOẶC TÊN INGAME
-   */
-  function findTarget(query) {
-    if (!query || typeof query !== 'string') return null;
-    const cleanQuery = query.trim().toLowerCase();
-    if (!cleanQuery) return null;
-
-    return state.mappings.find(player => {
-      // Khớp Steam ID
-      if (player.steamIds.some(sid => sid.toLowerCase() === cleanQuery || sid.toLowerCase().includes(cleanQuery))) {
-        return true;
-      }
-
-      // Khớp Discord ID
-      if (player.discordId && player.discordId.toLowerCase() === cleanQuery) {
-        return true;
-      }
-
-      // Khớp Tên Ingame (trong danh sách alias)
-      if (player.names.some(name => name.toLowerCase() === cleanQuery)) {
-        return true;
-      }
-
-      // Khớp Tên chính
-      if (player.primaryName.toLowerCase() === cleanQuery) {
-        return true;
-      }
-
-      return false;
-    }) || null;
-  }
-
-  /**
-   * 3. LỌC DỮ LIỆU THỐNG KÊ CỦA PLAYER TARGET
-   */
-  function getStatsForPlayer(targetPlayer) {
-    if (!targetPlayer || !state.statsData) return null;
-
-    const dataList = Array.isArray(state.statsData) ? state.statsData : [state.statsData];
-
-    return dataList.filter(stat => {
-      const statSteam = String(stat.steamId || stat.steamid || stat.steam_id || '').trim().toLowerCase();
-      const statDiscord = String(stat.discordId || stat.discord_id || '').trim().toLowerCase();
-      const statName = String(stat.name || stat.player_name || stat.ingame_name || '').trim().toLowerCase();
-
-      if (statSteam && targetPlayer.steamIds.some(s => s.toLowerCase() === statSteam)) return true;
-      if (statDiscord && targetPlayer.discordId.toLowerCase() === statDiscord) return true;
-      if (statName && targetPlayer.names.some(n => n.toLowerCase() === statName)) return true;
-
-      return false;
-    });
-  }
-
-  /**
-   * 4. LẤY THAM SỐ TARGET TỪ URL (Ví dụ: ff_stats.html?target=76561198012345678)
-   */
-  function getQueryParam() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('target') || urlParams.get('user') || urlParams.get('id') || urlParams.get('name');
-  }
-
-  /**
-   * 5. HIỂN THỊ DỮ LIỆU LÊN TRANG WEB (DOM RENDERING)
-   */
-  function renderUI() {
-    const searchInput = document.getElementById('search-input') || document.getElementById('target-input') || document.querySelector('input[type="text"]');
-    const targetInfoContainer = document.getElementById('target-info') || document.getElementById('player-profile');
-    const leaderboardTable = document.getElementById('leaderboard-table') || document.querySelector('table tbody');
-
-    // Cập nhật ô input tìm kiếm
-    if (searchInput && state.activeTarget) {
-      searchInput.value = state.activeTarget.primaryName;
-    }
-
-    // Cập nhật thẻ thông tin Player Target
-    if (targetInfoContainer && state.activeTarget) {
-      const p = state.activeTarget;
-      targetInfoContainer.innerHTML = `
-        <div class="player-card">
-          <h2>${escapeHtml(p.primaryName)}</h2>
-          <p><strong>Steam ID:</strong> ${p.steamIds.length ? p.steamIds.join(', ') : 'N/A'}</p>
-          <p><strong>Discord ID:</strong> ${p.discordId || 'N/A'}</p>
-          <p><strong>Tên Ingame:</strong> ${p.names.join(', ')}</p>
-        </div>
-      `;
-    }
-
-    // Render danh sách chỉ số vào bảng HTML
-    if (leaderboardTable) {
-      if (state.activeTarget) {
-        const matchedStats = getStatsForPlayer(state.activeTarget);
-        renderStatsRows(leaderboardTable, matchedStats);
-      } else {
-        renderStatsRows(leaderboardTable, state.statsData);
-      }
-    }
-  }
-
-  function renderStatsRows(tbody, stats) {
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    if (!stats || (Array.isArray(stats) && stats.length === 0)) {
-      tbody.innerHTML = `<tr><td colspan="100%" style="text-align:center;">Không tìm thấy dữ liệu thống kê phù hợp.</td></tr>`;
-      return;
-    }
-
-    const list = Array.isArray(stats) ? stats : [stats];
-    list.forEach((row, index) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${index + 1}</td>
-        <td><strong>${escapeHtml(row.name || row.player_name || 'N/A')}</strong></td>
-        <td>${row.ff_damage || row.friendly_fire || row.ff || 0}</td>
-        <td>${row.ff_kills || row.team_kills || row.tk || 0}</td>
-        <td>${row.kills || row.zombie_kills || 0}</td>
-        <td>${row.headshots || 0}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  /**
-   * 6. KHỞI TẠO VÀ NẠP DỮ LIỆU (INIT)
-   */
-  async function init() {
+// 1. Tải dữ liệu từ 3 file JSON trong thư mục data/
+async function loadData() {
     try {
-      // Đọc file mappings.json và stats.json (nếu có)
-      const [mappingRes, statsRes] = await Promise.allSettled([
-        fetch('mappings.json').then(r => r.json()),
-        fetch('stats.json').then(r => r.json()).catch(() => [])
-      ]);
+        const [namesRes, statsRes, playtimeRes] = await Promise.all([
+            fetch('./mappings.json'),
+            fetch('./data/ff_stats_current.json'),
+            fetch('./data/last_week.json')
+        ]);
 
-      if (mappingRes.status === 'fulfilled') {
-        state.mappings = normalizeMappings(mappingRes.value);
-        console.log('[ScriptFF] Mappings loaded:', state.mappings.length, 'players');
-      } else {
-        console.warn('[ScriptFF] Không thể nạp file mappings.json:', mappingRes.reason);
-      }
-
-      if (statsRes.status === 'fulfilled') {
-        state.statsData = statsRes.value;
-      }
-
-      // Đọc target từ query URL nếu có
-      const urlQuery = getQueryParam();
-      if (urlQuery) {
-        state.activeTarget = findTarget(urlQuery);
-      }
-
-      setupEventListeners();
-      renderUI();
-
-    } catch (err) {
-      console.error('[ScriptFF] Lỗi khi chạy scriptff.js:', err);
+        namesData = await namesRes.json();
+        const fullStats = await statsRes.json();
+        playtimeData = await playtimeRes.json();
+        
+        statsData = fullStats.players || {};
+        
+        if (fullStats.meta && fullStats.meta.week) {
+            weekInfoEl.textContent = `Dữ liệu cập nhật: Tuần ${fullStats.meta.week}`;
+        } else {
+            weekInfoEl.textContent = 'Dữ liệu thống kê người chơi';
+        }
+    } catch (error) {
+        console.error('Lỗi khi tải dữ liệu:', error);
+        weekInfoEl.textContent = 'Không thể tải dữ liệu từ file JSON!';
+        weekInfoEl.classList.add('text-rose-500');
     }
-  }
+}
 
-  /**
-   * 7. BẮT SỰ KIỆN TÌM KIẾM TRÊN TRANG WEB
-   */
-  function setupEventListeners() {
-    const searchForm = document.getElementById('search-form') || document.querySelector('form');
-    const searchInput = document.getElementById('search-input') || document.getElementById('target-input') || document.querySelector('input[type="text"]');
-    const searchBtn = document.getElementById('search-btn') || document.querySelector('button[type="submit"]');
+// 2. Tìm kiếm tên và render danh sách gợi ý
+searchInput.addEventListener('input', function () {
+    const query = this.value.trim().toLowerCase();
+    autocompleteList.innerHTML = '';
 
-    const handleSearch = (e) => {
-      if (e) e.preventDefault();
-      if (!searchInput) return;
+    if (!query) {
+        autocompleteList.classList.add('hidden');
+        return;
+    }
 
-      const query = searchInput.value;
-      const matched = findTarget(query);
+    // Lọc danh sách tên (Hỗ trợ Unicode, tiếng Trung, Ả Rập & Ký tự đặc biệt)
+    const matchedNames = Object.keys(namesData).filter(name => 
+        name.toLowerCase().includes(query)
+    );
 
-      state.activeTarget = matched;
-      renderUI();
+    if (matchedNames.length === 0) {
+        const noResultItem = document.createElement('li');
+        noResultItem.className = 'px-5 py-3 text-gray-500 text-sm italic';
+        noResultItem.textContent = 'Không tìm thấy người chơi...';
+        autocompleteList.appendChild(noResultItem);
+    } else {
+        const safeQuery = escapeRegExp(query);
+        const reg = new RegExp(`(${safeQuery})`, 'gi');
+
+        matchedNames.forEach(name => {
+            const li = document.createElement('li');
+            li.className = 'px-5 py-3 cursor-pointer hover:bg-indigo-600/30 transition-colors flex justify-between items-center';
+            
+            // Safe Highlight ký tự khớp
+            const safeName = escapeHTML(name);
+            const highlightedName = safeName.replace(reg, '<span class="text-indigo-400 font-bold">$1</span>');
+
+            li.innerHTML = `<span>${highlightedName}</span>`;
+            
+            li.addEventListener('click', () => {
+                selectPlayer(name);
+            });
+
+            autocompleteList.appendChild(li);
+        });
+    }
+
+    autocompleteList.classList.remove('hidden');
+});
+
+// Hide dropdown khi click ra ngoài
+document.addEventListener('click', function (e) {
+    if (!searchInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+        autocompleteList.classList.add('hidden');
+    }
+});
+
+// 3. Hiển thị thông tin người chơi khi được chọn
+function selectPlayer(name) {
+    searchInput.value = name;
+    autocompleteList.classList.add('hidden');
+
+    const playerId = namesData[name];
+    const playerStats = statsData[playerId] || {
+        shot: 0,
+        shotted: 0,
+        kills_dealt: 0,
+        incaps_dealt: 0
     };
 
-    if (searchForm) searchForm.addEventListener('submit', handleSearch);
-    if (searchBtn) searchBtn.addEventListener('click', handleSearch);
-    if (searchInput) {
-      searchInput.addEventListener('keyup', (e) => {
-        if (e.key === 'Enter') handleSearch(e);
-      });
+    // Lấy số phút chơi từ last_week.json
+    const minutes = playtimeData[playerId] || 0;
+
+    // Render thông tin người chơi
+    playerNameEl.textContent = name;
+    playerIdEl.textContent = `ID: ${playerId}`;
+    
+    // Hiển thị phút chơi (có chuyển đổi thêm giờ cho trực quan)
+    if (playerPlaytimeEl) {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        let timeFormatted = `${minutes} phút`;
+        
+        if (hours > 0) {
+            timeFormatted += ` (${hours}h ${remainingMinutes}m)`;
+        }
+        
+        playerPlaytimeEl.textContent = `⏱️ Thời gian chơi tuần trước: ${timeFormatted}`;
     }
-  }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+    playerProfile.classList.remove('hidden');
 
-  // Bộc lộ API ra window nếu bạn muốn gọi từ file HTML
-  window.ScriptFF = {
-    findTarget,
-    getStatsForPlayer,
-    getState: () => state,
-    init
-  };
+    // Animate đếm số mượt mà
+    animateNumber(statShot, playerStats.shot || 0);
+    animateNumber(statShotted, playerStats.shotted || 0);
+    animateNumber(statKills, playerStats.kills_dealt || 0);
+    animateNumber(statIncaps, playerStats.incaps_dealt || 0);
+}
 
-})();
+// Hàm hỗ trợ hiệu ứng nhảy số
+function animateNumber(element, targetValue) {
+    const duration = 500; // ms
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const currentValue = Math.floor(progress * targetValue);
+        
+        element.textContent = currentValue.toLocaleString('vi-VN');
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = targetValue.toLocaleString('vi-VN');
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+// Khởi chạy
+loadData();
