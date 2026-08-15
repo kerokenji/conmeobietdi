@@ -1,4 +1,4 @@
-let nameToIdMap = new Map(); // Lưu map Tên -> PlayerID
+let nameToIdMap = new Map(); // Lưu map Tên -> Base ID (số xxx)
 let allNames = [];          // Danh sách tất cả tên ingame phục vụ cho autocomplete
 let statsData = {};
 let playtimeData = {};      // Biến lưu dữ liệu phút chơi từ last_week.json
@@ -32,37 +32,49 @@ function escapeHTML(str) {
         .replace(/'/g, '&#039;');
 }
 
+// Hàm tách lấy chuỗi số ID cuối cùng (bỏ STEAM_1:0:, STEAM_0:1:,...)
+function extractIdTail(idStr) {
+    if (!idStr) return '';
+    const str = String(idStr).trim();
+    // Lấy chuỗi chữ số ở cuối cùng của ID
+    const match = str.match(/\d+$/);
+    if (match) return match[0];
+    
+    // Dự phòng cắt theo dấu ':' nếu định dạng lạ
+    return str.includes(':') ? str.split(':').pop().trim() : str;
+}
+
 // Hàm hỗ trợ phân tích mappings.json
 function parseMappingsData(rawMappings) {
     const map = new Map();
 
+    const addMapping = (id, namesList) => {
+        const cleanId = extractIdTail(id);
+        if (!cleanId) return;
+
+        namesList.forEach(n => {
+            if (typeof n === 'string' && n.trim()) {
+                map.set(n.trim(), cleanId);
+            }
+        });
+    };
+
     if (Array.isArray(rawMappings)) {
         rawMappings.forEach(item => {
             const id = item.id || item.playerId || item.steam_id || item.steamid;
-            if (!id) return;
-            
             const names = item.names || item.aliases || (item.name ? [item.name] : []);
-            names.forEach(n => {
-                if (typeof n === 'string' && n.trim()) {
-                    map.set(n.trim(), id);
-                }
-            });
+            addMapping(id, names);
         });
     } else if (typeof rawMappings === 'object' && rawMappings !== null) {
         Object.entries(rawMappings).forEach(([key, val]) => {
             if (typeof val === 'string') {
-                if (key.startsWith('STEAM_') || /^\d{17}$/.test(key)) {
-                    map.set(val.trim(), key);
+                if (key.includes(':') || /^\d+$/.test(key)) {
+                    map.set(val.trim(), extractIdTail(key));
                 } else {
-                    map.set(key.trim(), val);
+                    map.set(key.trim(), extractIdTail(val));
                 }
             } else if (Array.isArray(val)) {
-                const id = key;
-                val.forEach(n => {
-                    if (typeof n === 'string' && n.trim()) {
-                        map.set(n.trim(), id);
-                    }
-                });
+                addMapping(key, val);
             } else if (typeof val === 'object' && val !== null) {
                 const id = val.id || val.playerId || val.steam_id || key;
                 const namesList = [];
@@ -75,16 +87,14 @@ function parseMappingsData(rawMappings) {
 
                 if (namesList.length === 0) {
                     Object.values(val).forEach(v => {
-                        if (typeof v === 'string' && v !== id) namesList.push(v);
-                        else if (Array.isArray(v)) namesList.push(...v);
+                        if (typeof v === 'string' && extractIdTail(v) !== extractIdTail(id)) {
+                            namesList.push(v);
+                        } else if (Array.isArray(v)) {
+                            namesList.push(...v);
+                        }
                     });
                 }
-
-                namesList.forEach(n => {
-                    if (typeof n === 'string' && n.trim()) {
-                        map.set(n.trim(), id);
-                    }
-                });
+                addMapping(id, namesList);
             }
         });
     }
@@ -92,36 +102,24 @@ function parseMappingsData(rawMappings) {
     return map;
 }
 
-// Hàm tìm kiếm dữ liệu linh hoạt theo ID (Tự chuẩn hóa STEAM_0 vs STEAM_1, hoa/thường, Mảng vs Object)
-function findDataById(container, targetId) {
-    if (!container || !targetId) return null;
+// Hàm tìm kiếm dữ liệu theo chuỗi số ID duy nhất (Tail ID)
+function findDataById(container, targetTailId) {
+    if (!container || !targetTailId) return null;
 
-    // Lấy đối tượng dữ liệu thực sự (xử lý bọc trong key "players" hoặc không)
     const data = container.players || container;
-    const cleanTarget = String(targetId).trim().toLowerCase();
-    const normTarget = cleanTarget.replace(/^steam_[01]:/, '');
 
-    // 1. Nếu data là Array: [{ id: "...", ... }]
+    // 1. Trường hợp data dạng mảng Array: [{ id: "STEAM_1:0:xxx", ... }]
     if (Array.isArray(data)) {
         return data.find(item => {
-            const itemSteam = String(item.id || item.playerId || item.steam_id || item.steamid || '').trim().toLowerCase();
-            const normItem = itemSteam.replace(/^steam_[01]:/, '');
-            return itemSteam === cleanTarget || (normTarget && normItem === normTarget);
+            const itemId = item.id || item.playerId || item.steam_id || item.steamid;
+            return extractIdTail(itemId) === targetTailId;
         }) || null;
     }
 
-    // 2. Nếu data là Object: { "STEAM_...": ... }
+    // 2. Trường hợp data dạng Object: { "STEAM_1:0:xxx": ... }
     if (typeof data === 'object') {
-        // Khớp chính xác key
-        if (data[targetId] !== undefined) return data[targetId];
-
-        // Quét tìm key khớp mềm
         for (const [key, val] of Object.entries(data)) {
-            const cleanKey = String(key).trim().toLowerCase();
-            if (cleanKey === cleanTarget) return val;
-
-            const normKey = cleanKey.replace(/^steam_[01]:/, '');
-            if (normTarget && normKey === normTarget) {
+            if (extractIdTail(key) === targetTailId) {
                 return val;
             }
         }
@@ -215,14 +213,14 @@ function selectPlayer(name) {
     searchInput.value = name;
     autocompleteList.classList.add('hidden');
 
-    const playerId = nameToIdMap.get(name);
-    if (!playerId) {
+    const tailId = nameToIdMap.get(name);
+    if (!tailId) {
         console.error('Không tìm thấy ID người chơi:', name);
         return;
     }
 
-    // Tra cứu Stats theo ID
-    const rawStats = findDataById(statsData, playerId);
+    // Tra cứu Stats theo tailId
+    const rawStats = findDataById(statsData, tailId);
     const playerStats = (typeof rawStats === 'object' && rawStats !== null) ? rawStats : {
         shot: 0,
         shotted: 0,
@@ -230,8 +228,8 @@ function selectPlayer(name) {
         incaps_dealt: 0
     };
 
-    // Tra cứu Playtime theo ID
-    const rawPlaytime = findDataById(playtimeData, playerId);
+    // Tra cứu Playtime theo tailId
+    const rawPlaytime = findDataById(playtimeData, tailId);
     let minutes = 0;
     if (typeof rawPlaytime === 'number') {
         minutes = rawPlaytime;
@@ -243,7 +241,7 @@ function selectPlayer(name) {
 
     // Render thông tin người chơi
     playerNameEl.textContent = name;
-    playerIdEl.textContent = `ID: ${playerId}`;
+    playerIdEl.textContent = `ID: ${tailId}`;
     
     if (playerPlaytimeEl) {
         const hours = Math.floor(minutes / 60);
