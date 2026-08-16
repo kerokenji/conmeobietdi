@@ -61,7 +61,7 @@
     },
     "STEAM_1:1:241852047": {
         "discord_id": "1076788550508494908",
-        "ingame_name": ""
+        "ingame_name": "（ ͜.人 ͜.）⛇☃"
     },
     "STEAM_1:0:242584050": {
         "discord_id": "419154451778240522",
@@ -169,7 +169,7 @@
     },
     "STEAM_1:1:524205977": {
         "discord_id": "482331255623385092",
-        "ingame_name": ""
+        "ingame_name": "Curren Bouquetd'or"
     },
     "STEAM_1:0:228454448": {
         "discord_id": "622122388909195275",
@@ -201,7 +201,7 @@
     },
     "STEAM_1:1:960298889": {
         "discord_id": "1472538961485234278",
-        "ingame_name": ""
+        "ingame_name": "manhvippro"
     },
     "STEAM_1:0:70516251": {
         "discord_id": "1109397978130686022",
@@ -221,7 +221,7 @@
     },
     "STEAM_1:1:628567930": {
         "discord_id": "884268171211710476",
-        "ingame_name": ""
+        "ingame_name": "Grua"
     },
     "STEAM_1:0:522010986": {
         "discord_id": "526649486890631178",
@@ -233,7 +233,7 @@
     },
     "STEAM_1:0:963323015": {
         "discord_id": "498437955120136192",
-        "ingame_name": ""
+        "ingame_name": "boviet666"
     },
     "STEAM_1:1:644946484": {
         "discord_id": "1484612338182258708",
@@ -243,14 +243,9 @@
         "discord_id": "1216426651441692814",
         "ingame_name": "TezzyPham"
     },
-    "STEAM_1:1:860991615": "808935060430258216",
-    "STEAM_1:1:147548468": {
-        "discord_id": "509787439963963412",
-        "ingame_name": "phuc199718"
-    },
     "BOT_OR_UNKNOWN": {
         "discord_id": "",
-        "ingame_name": "Holo 40k"
+        "ingame_name": "TezzyPham"
     },
     "STEAM_1:0:218160880": {
         "discord_id": "602009709721026576",
@@ -264,6 +259,10 @@
         "discord_id": "948379308332830770",
         "ingame_name": "LmaoLmao"
     },
+    "STEAM_1:1:147548468": {
+        "discord_id": "509787439963963412",
+        "ingame_name": "phuc199718"
+    },
     "STEAM_1:1:626078671": {
         "discord_id": "893864528050286633",
         "ingame_name": "chimxanh"
@@ -271,5 +270,9 @@
     "STEAM_1:1:925049770": {
         "discord_id": "1005453190524846203",
         "ingame_name": "Holo 40k"
+    },
+    "STEAM_1:1:240976931": {
+        "discord_id": "",
+        "ingame_name": "布鲁矮-歪特-哆拉贡"
     }
 }
