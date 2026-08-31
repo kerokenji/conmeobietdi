@@ -112,13 +112,10 @@ function processMappings(mappings) {
     }
 }
 
-// Hàm hỗ trợ đọc 1 file log (thử ở thư mục gốc trước, nếu không có thì thử trong thư mục data/)
-async function fetchSingleLogFile(filename) {
+// Hàm hỗ trợ đọc 1 file log từ đường dẫn trong thư mục data
+async function fetchSingleLogFile(filepath) {
     try {
-        let res = await fetch(filename);
-        if (res.ok) return await res.text();
-
-        res = await fetch(`data/${filename}`);
+        const res = await fetch(filepath);
         if (res.ok) return await res.text();
     } catch (e) {
         // Lỗi kết nối hoặc không tìm thấy file
@@ -126,14 +123,14 @@ async function fetchSingleLogFile(filename) {
     return null;
 }
 
-// Hàm tải và ghép nối tất cả các file log (l4d2_ff.log, l4d2_ff_2.log, l4d2_ff_3.log,...)
+// Hàm tải và ghép nối tất cả các file log từ thư mục data/ (data/l4d2_ff_1.log, data/l4d2_ff_2.log,...)
 async function loadAllFFLogs() {
     let index = 1;
     let combinedLogText = "";
 
-    while (index <= 50) { // Giới hạn tối đa 50 file log để tránh vòng lặp vô tận
-        const filename = (index === 1) ? 'l4d2_ff.log' : `l4d2_ff_${index}.log`;
-        const logContent = await fetchSingleLogFile(filename);
+    while (index <= 50) { // Giới hạn kiểm tra tối đa 50 file log
+        const filepath = `data/l4d2_ff_${index}.log`;
+        const logContent = await fetchSingleLogFile(filepath);
 
         // Nếu không tải được file (hết chuỗi file log), dừng lại
         if (!logContent) {
@@ -266,7 +263,7 @@ async function init() {
 
         processMappings(mappings);
 
-        // Tải tất cả các file log hiện có (l4d2_ff.log, l4d2_ff_2.log, l4d2_ff_3.log,...)
+        // Tải tất cả các file log hiện có: data/l4d2_ff_1.log, data/l4d2_ff_2.log,...
         await loadAllFFLogs();
 
         if (statsData.meta && statsData.meta.week) {
