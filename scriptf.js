@@ -216,9 +216,9 @@ async function init() {
     try {
         const [mappingsRes, statsRes, lastWeekRes, logRes] = await Promise.all([
             fetch('mappings.json'),
-            fetch('ff_stats_current.json'),
-            fetch('last_week.json').catch(() => null),
-            fetch('l4d2_ff_log_2026_08_31.log').catch(() => fetch('data/l4d2_ff_log_2026_08_31.log')).catch(() => null)
+            fetch('/data/ff_stats_current.json'),
+            fetch('/data/last_week.json').catch(() => null),
+            fetch('/data/l4d2_ff_log_2026_08_31.log').catch(() => fetch('data/l4d2_ff_log_2026_08_31.log')).catch(() => null)
         ]);
 
         const mappings = await mappingsRes.json();
