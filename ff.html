@@ -197,4 +197,89 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                <div class="glass
+                <div class="glass-card p-6 rounded-3xl border border-amber-500/30 flex flex-col justify-between">
+                    <div class="flex items-center justify-between pb-3 border-b border-amber-900/40 mb-4">
+                        <h3 class="font-extrabold text-amber-200 text-base md:text-lg flex items-center gap-2">
+                            <span>🎯</span> Top Gây Sát Thương
+                        </h3>
+                        <span class="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">Shot</span>
+                    </div>
+                    <ul id="leaderboard-top-shot" class="space-y-2.5 divide-y divide-amber-900/30">
+                        </ul>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border border-orange-500/30 flex flex-col justify-between">
+                    <div class="flex items-center justify-between pb-3 border-b border-amber-900/40 mb-4">
+                        <h3 class="font-extrabold text-orange-200 text-base md:text-lg flex items-center gap-2">
+                            <span>🛡️</span> Top Dính Sát Thương
+                        </h3>
+                        <span class="text-xs font-bold text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2.5 py-1 rounded-full">Shotted</span>
+                    </div>
+                    <ul id="leaderboard-top-shotted" class="space-y-2.5 divide-y divide-amber-900/30">
+                        </ul>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border border-yellow-500/30 flex flex-col justify-between">
+                    <div class="flex items-center justify-between pb-3 border-b border-amber-900/40 mb-4">
+                        <h3 class="font-extrabold text-yellow-200 text-base md:text-lg flex items-center gap-2">
+                            <span>📚</span> Top Hạ Gục Đồng Đội
+                        </h3>
+                        <span class="text-xs font-bold text-yellow-400 bg-yellow-500/10 border border-yellow-500/20 px-2.5 py-1 rounded-full">Incaps</span>
+                    </div>
+                    <ul id="leaderboard-top-incaps" class="space-y-2.5 divide-y divide-amber-900/30">
+                        </ul>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border border-red-500/30 flex flex-col justify-between">
+                    <div class="flex items-center justify-between pb-3 border-b border-amber-900/40 mb-4">
+                        <h3 class="font-extrabold text-red-200 text-base md:text-lg flex items-center gap-2">
+                            <span>🎒</span> Top Giết Đồng Đội
+                        </h3>
+                        <span class="text-xs font-bold text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-full">Kills</span>
+                    </div>
+                    <ul id="leaderboard-top-kills" class="space-y-2.5 divide-y divide-amber-900/30">
+                        </ul>
+                </div>
+
+            </div>
+
+            <div class="glass-card p-6 rounded-3xl space-y-4 border border-amber-500/20">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-amber-900/40 pb-4">
+                    <div>
+                        <h3 class="text-lg md:text-xl font-bold text-amber-100 flex items-center gap-2">
+                            <span>📊</span> Bảng Xếp Hạng Tổng Thể
+                        </h3>
+                        <p class="text-xs text-amber-300/60 mt-0.5">Bấm vào tiêu đề cột để sắp xếp hoặc bấm vào người chơi để xem chi tiết</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="text-xs uppercase bg-amber-950/40 text-amber-400/80 border-b border-amber-900/50">
+                            <tr>
+                                <th class="py-3 px-3 text-center rounded-l-xl">#</th>
+                                <th class="py-3 px-4">Người Chơi</th>
+                                <th class="py-3 px-3 text-right cursor-pointer hover:text-amber-200" onclick="sortLeaderboard('shot')">Gây Dame ⇕</th>
+                                <th class="py-3 px-3 text-right cursor-pointer hover:text-amber-200" onclick="sortLeaderboard('shotted')">Dính Dame ⇕</th>
+                                <th class="py-3 px-3 text-center cursor-pointer hover:text-amber-200" onclick="sortLeaderboard('incaps_dealt')">Incap ⇕</th>
+                                <th class="py-3 px-3 text-center cursor-pointer hover:text-amber-200" onclick="sortLeaderboard('kills_dealt')">Kill ⇕</th>
+                                <th class="py-3 px-4 text-right rounded-r-xl">Thời Gian Chơi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-tbody" class="divide-y divide-amber-900/30 text-amber-100">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="scriptf.js"></script>
+
+    <div style="margin-top: 20px; color: #b45309; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; opacity: 0.5;">
+        Designed with 🍁
+    </div>
+</body>
+</html>
