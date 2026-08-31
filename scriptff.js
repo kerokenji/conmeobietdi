@@ -129,7 +129,7 @@ async function loadAllFFLogs() {
     let combinedLogText = "";
 
     while (index <= 50) { // Giới hạn kiểm tra tối đa 50 file log
-        const filepath = `data/l4d2_ff_${index}.log`;
+        const filepath = `data/ff_stats_${index}.log`;
         const logContent = await fetchSingleLogFile(filepath);
 
         // Nếu không tải được file (hết chuỗi file log), dừng lại
@@ -255,8 +255,8 @@ async function init() {
     try {
         const [mappingsRes, statsRes, lastWeekRes] = await Promise.all([
             fetch('mappings.json'),
-            fetch('ff_stats_current.json'),
-            fetch('last_week.json').catch(() => null)
+            fetch('/data/ff_stats_current.json'),
+            fetch('/data/last_week.json').catch(() => null)
         ]);
 
         const mappings = await mappingsRes.json();
