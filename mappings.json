@@ -193,7 +193,7 @@
     },
     "STEAM_1:1:561746628": {
         "discord_id": "814143586333491232",
-        "ingame_name": ""
+        "ingame_name": "Atyom"
     },
     "STEAM_1:1:444951079": {
         "discord_id": "685690741263040627",
@@ -282,5 +282,21 @@
     "STEAM_1:0:690072085": {
         "discord_id": "788072951148838922",
         "ingame_name": "Binchu2222"
+    },
+    "STEAM_1:1:860991615": {
+        "discord_id": "",
+        "ingame_name": "NoreK"
+    },
+    "STEAM_1:0:562186389": {
+        "discord_id": "809516705663025182",
+        "ingame_name": "tychuotkg789"
+    },
+    "STEAM_1:1:919011537": {
+        "discord_id": "485098847245434881",
+        "ingame_name": "[VN✪] BigD"
+    },
+    "[VN✪": {
+        "discord_id": "485098847245434881",
+        "ingame_name": "[VN✪"
     }
 }
