@@ -12,76 +12,76 @@
             "incaps_received": 3
         },
         "482331255623385092": {
-            "shot": 1578,
-            "shotted": 1564,
-            "kills_dealt": 0,
-            "incaps_dealt": 4,
-            "deaths": 1,
-            "incaps_received": 2
+            "shot": 3146,
+            "shotted": 5993,
+            "kills_dealt": 1,
+            "incaps_dealt": 6,
+            "deaths": 5,
+            "incaps_received": 13
         },
         "592742714953433148": {
-            "shot": 2220,
-            "shotted": 1149,
-            "kills_dealt": 1,
-            "incaps_dealt": 5,
-            "deaths": 0,
-            "incaps_received": 3
-        },
-        "453518925997670411": {
-            "shot": 2310,
-            "shotted": 2214,
-            "kills_dealt": 0,
-            "incaps_dealt": 3,
+            "shot": 9798,
+            "shotted": 2617,
+            "kills_dealt": 8,
+            "incaps_dealt": 12,
             "deaths": 0,
             "incaps_received": 6
         },
-        "602009709721026576": {
-            "shot": 3585,
-            "shotted": 3265,
-            "kills_dealt": 2,
-            "incaps_dealt": 6,
+        "453518925997670411": {
+            "shot": 3049,
+            "shotted": 4419,
+            "kills_dealt": 0,
+            "incaps_dealt": 5,
             "deaths": 0,
-            "incaps_received": 7
+            "incaps_received": 8
+        },
+        "602009709721026576": {
+            "shot": 6234,
+            "shotted": 8340,
+            "kills_dealt": 2,
+            "incaps_dealt": 12,
+            "deaths": 2,
+            "incaps_received": 15
         },
         "1216426651441692814": {
-            "shot": 2665,
-            "shotted": 2037,
-            "kills_dealt": 0,
-            "incaps_dealt": 4,
-            "deaths": 1,
-            "incaps_received": 3
+            "shot": 4405,
+            "shotted": 4018,
+            "kills_dealt": 1,
+            "incaps_dealt": 8,
+            "deaths": 2,
+            "incaps_received": 8
         },
         "1306190054108037172": {
-            "shot": 1566,
-            "shotted": 2342,
-            "kills_dealt": 0,
-            "incaps_dealt": 3,
-            "deaths": 0,
-            "incaps_received": 4
-        },
-        "1292465451393224756": {
-            "shot": 3198,
-            "shotted": 4584,
+            "shot": 4237,
+            "shotted": 3935,
             "kills_dealt": 1,
-            "incaps_dealt": 5,
+            "incaps_dealt": 11,
             "deaths": 0,
             "incaps_received": 5
         },
-        "526649486890631178": {
-            "shot": 1313,
-            "shotted": 1824,
-            "kills_dealt": 0,
-            "incaps_dealt": 3,
-            "deaths": 1,
+        "1292465451393224756": {
+            "shot": 5962,
+            "shotted": 7567,
+            "kills_dealt": 1,
+            "incaps_dealt": 9,
+            "deaths": 2,
             "incaps_received": 6
         },
+        "526649486890631178": {
+            "shot": 2001,
+            "shotted": 3674,
+            "kills_dealt": 0,
+            "incaps_dealt": 4,
+            "deaths": 2,
+            "incaps_received": 8
+        },
         "1191549123753672715": {
-            "shot": 172,
-            "shotted": 109,
+            "shot": 341,
+            "shotted": 350,
             "kills_dealt": 0,
             "incaps_dealt": 0,
             "deaths": 0,
-            "incaps_received": 0
+            "incaps_received": 2
         },
         "814143586333491232": {
             "shot": 2365,
@@ -92,12 +92,12 @@
             "incaps_received": 1
         },
         "485098847245434881": {
-            "shot": 1768,
-            "shotted": 1109,
+            "shot": 2678,
+            "shotted": 2211,
             "kills_dealt": 0,
             "incaps_dealt": 3,
             "deaths": 1,
-            "incaps_received": 1
+            "incaps_received": 3
         },
         "809516705663025182": {
             "shot": 1726,
@@ -108,36 +108,60 @@
             "incaps_received": 1
         },
         "822077728278446100": {
-            "shot": 1335,
-            "shotted": 1185,
+            "shot": 3477,
+            "shotted": 3799,
             "kills_dealt": 1,
-            "incaps_dealt": 2,
+            "incaps_dealt": 7,
             "deaths": 0,
-            "incaps_received": 3
-        },
-        "1005453190524846203": {
-            "shot": 738,
-            "shotted": 3471,
-            "kills_dealt": 0,
-            "incaps_dealt": 2,
-            "deaths": 2,
             "incaps_received": 6
         },
+        "1005453190524846203": {
+            "shot": 1075,
+            "shotted": 4410,
+            "kills_dealt": 0,
+            "incaps_dealt": 3,
+            "deaths": 2,
+            "incaps_received": 8
+        },
         "893864528050286633": {
-            "shot": 533,
-            "shotted": 1080,
+            "shot": 1139,
+            "shotted": 3131,
             "kills_dealt": 0,
             "incaps_dealt": 1,
-            "deaths": 1,
-            "incaps_received": 2
+            "deaths": 2,
+            "incaps_received": 5
         },
         "764851379767345182": {
-            "shot": 318,
-            "shotted": 969,
+            "shot": 3392,
+            "shotted": 2333,
+            "kills_dealt": 2,
+            "incaps_dealt": 6,
+            "deaths": 1,
+            "incaps_received": 5
+        },
+        "898904813880881162": {
+            "shot": 2343,
+            "shotted": 2322,
+            "kills_dealt": 0,
+            "incaps_dealt": 7,
+            "deaths": 0,
+            "incaps_received": 2
+        },
+        "1472538961485234278": {
+            "shot": 1748,
+            "shotted": 448,
             "kills_dealt": 0,
             "incaps_dealt": 1,
             "deaths": 0,
             "incaps_received": 3
+        },
+        "864909957111873566": {
+            "shot": 67,
+            "shotted": 273,
+            "kills_dealt": 0,
+            "incaps_dealt": 0,
+            "deaths": 0,
+            "incaps_received": 1
         }
     }
 }
