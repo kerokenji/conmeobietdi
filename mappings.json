@@ -3,14 +3,6 @@
         "discord_id": "453518925997670411",
         "ingame_name": "KeroN"
     },
-    "STEAM_0:1:626078671": {
-        "discord_id": "893864528050286633",
-        "ingame_name": ""
-    },
-    "STEAM_0:0:218160880": {
-        "discord_id": "602009709721026576",
-        "ingame_name": ""
-    },
     "STEAM_0:0:937958833": {
         "discord_id": "1113442143902650398",
         "ingame_name": ""
@@ -33,14 +25,6 @@
     },
     "STEAM_0:0:606728972": {
         "discord_id": "948379308332830770",
-        "ingame_name": ""
-    },
-    "STEAM_0:0:471595906": {
-        "discord_id": "592742714953433148",
-        "ingame_name": ""
-    },
-    "STEAM_0:1:925049770": {
-        "discord_id": "1005453190524846203",
         "ingame_name": ""
     },
     "STEAM_0:1:938430432": {
@@ -306,5 +290,21 @@
     "STEAM_1:0:682073546": {
         "discord_id": "898904813880881162",
         "ingame_name": "Blove"
+    },
+    "STEAM_0:1:626078671": {
+        "discord_id": "893864528050286633",
+        "ingame_name": ""
+    },
+    "STEAM_0:0:218160880": {
+        "discord_id": "602009709721026576",
+        "ingame_name": ""
+    },
+    "STEAM_0:0:471595906": {
+        "discord_id": "592742714953433148",
+        "ingame_name": ""
+    },
+    "STEAM_0:1:925049770": {
+        "discord_id": "1005453190524846203",
+        "ingame_name": ""
     }
 }
