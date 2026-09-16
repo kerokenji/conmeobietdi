@@ -112,7 +112,46 @@ function processMappings(mappings) {
     }
 }
 
-// Phân tích l4d2_ff_log_2026_08_31.log
+// Hàm hỗ trợ đọc 1 file log từ đường dẫn trong thư mục data
+async function fetchSingleLogFile(filepath) {
+    try {
+        const res = await fetch(filepath);
+        if (res.ok) return await res.text();
+    } catch (e) {
+        // Lỗi kết nối hoặc không tìm thấy file
+    }
+    return null;
+}
+
+// Hàm tải và ghép nối tất cả các file log từ thư mục data/ (data/l4d2_ff_1.log, data/l4d2_ff_2.log,...)
+async function loadAllFFLogs() {
+    let index = 1;
+    let combinedLogText = "";
+
+    while (index <= 50) { // Giới hạn kiểm tra tối đa 50 file log
+        const filepath = `https://conmeobietdi.vercel.app/data/ff_stats_${index}.log`;
+        const logContent = await fetchSingleLogFile(filepath);
+
+        // Nếu không tải được file (hết chuỗi file log), dừng lại
+        if (!logContent) {
+            break;
+        }
+
+        combinedLogText += logContent + "\n";
+        index++;
+    }
+
+    if (combinedLogText.trim().length > 0) {
+        parseFFLog(combinedLogText);
+
+        // Tự động re-render bảng nếu người dùng đã tra cứu tên trước khi log tải xong
+        if (currentQueriedSteamId) {
+            renderFFLogTable(currentQueriedSteamId, currentFFMode);
+        }
+    }
+}
+
+// Phân tích chuỗi dữ liệu Log FF tổng hợp
 function parseFFLog(logText) {
     ffLogDealt = {};
     ffLogReceived = {};
@@ -214,11 +253,10 @@ function parseFFLog(logText) {
 // Khởi tạo hệ thống
 async function init() {
     try {
-        const [mappingsRes, statsRes, lastWeekRes, logRes] = await Promise.all([
-            fetch('mappings.json'),
-            fetch('/data/ff_stats_current.json'),
-            fetch('/data/last_week.json').catch(() => null),
-            fetch('/data/l4d2_ff_log_2026_08_31.log').catch(() => fetch('data/l4d2_ff_log_2026_08_31.log')).catch(() => null)
+        const [mappingsRes, statsRes, lastWeekRes] = await Promise.all([
+            fetch('https://conmeobietdi.vercel.app/mappings.json'),
+            fetch('https://conmeobietdi.vercel.app/data/ff_stats_current.json'),
+            fetch('https://conmeobietdi.vercel.app/data/last_week.json').catch(() => null)
         ]);
 
         const mappings = await mappingsRes.json();
@@ -230,10 +268,8 @@ async function init() {
 
         processMappings(mappings);
 
-        if (logRes && logRes.ok) {
-            const logText = await logRes.text();
-            parseFFLog(logText);
-        }
+        // Tải tất cả các file log hiện có: data/l4d2_ff_1.log, data/l4d2_ff_2.log,...
+        await loadAllFFLogs();
 
         if (statsData.meta && statsData.meta.week) {
             weekInfoEl.textContent = `Dữ liệu cập nhật cho tuần: ${statsData.meta.week}`;
@@ -357,7 +393,7 @@ function displayPlayerStats(query) {
     }
 
     if (!steamId && discordId) steamId = discordToSteamMap.get(discordId) || "";
-    if (!discordId && steamId) discordId = steamToDiscordMap.get(steamId) || "";
+    if (!discordId && steamId) discordId = steamToDiscordMap.get(discordId) || "";
 
     currentQueriedSteamId = steamId;
 
