@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CON MÈO BIẾT ĐI | TẾT TRUNG THU</title>
+
+<style>
+/* ===== Cấu hình chung ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  /* Nền bầu trời đêm Rằm Trung Thu */
+  background: radial-gradient(circle at 85% 15%, #2b1055 0%, #0d061a 60%, #05020a 100%);
+  color: #ffe6a7;
+  font-family: 'Segoe UI', Arial, Tahoma, sans-serif;
+  margin: 0;
+  padding: 30px 50px 120px 50px;
+  text-align: left;
+  line-height: 1.6;
+  font-size: 15px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== Mặt trăng tỏa sáng ===== */
+.moon {
+  position: fixed;
+  top: 25px;
+  right: 60px;
+  width: 110px;
+  height: 110px;
+  background: radial-gradient(circle, #fffbe6 20%, #ffe066 70%, #ffd000 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 40px #ffe066, 0 0 80px rgba(255, 224, 102, 0.5);
+  z-index: 1;
+}
+
+/* Chi tiết vân trăng */
+.moon::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 25px;
+  width: 30px;
+  height: 30px;
+  background: rgba(220, 180, 50, 0.2);
+  border-radius: 50%;
+  box-shadow: 25px 30px 0 10px rgba(220, 180, 50, 0.15);
+}
+
+/* ===== Lồng đèn Trung Thu đu đưa bên trái ===== */
+.lantern-container {
+  position: fixed;
+  top: 0;
+  left: 50px;
+  z-index: 10;
+  animation: sway 3s ease-in-out infinite alternate;
+  transform-origin: top center;
+}
+
+.lantern-wire {
+  width: 2px;
+  height: 50px;
+  background: #ffcc00;
+  margin: 0 auto;
+}
+
+.lantern {
+  width: 60px;
+  height: 70px;
+  background: linear-gradient(135deg, #ff4d4d, #cc0000);
+  border-radius: 20px / 35px;
+  border: 2px solid #ffcc00;
+  box-shadow: 0 0 25px #ff3333, inset 0 0 15px #ff9999;
+  position: relative;
+  margin: 0 auto;
+}
+
+.lantern::before, .lantern::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35px;
+  height: 6px;
+  background: #ffcc00;
+  border-radius: 3px;
+}
+.lantern::before { top: -6px; }
+.lantern::after { bottom: -6px; }
+
+/* Tua rua lồng đèn */
+.lantern-tassel {
+  width: 6px;
+  height: 35px;
+  background: #ffcc00;
+  margin: 6px auto 0 auto;
+  box-shadow: 0 5px 10px rgba(255, 204, 0, 0.7);
+}
+
+@keyframes sway {
+  0%   { transform: rotate(-6deg); }
+  100% { transform: rotate(6deg); }
+}
+
+/* ===== Tiêu đề ===== */
+h1 {
+  color: #fff066;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 26px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  text-shadow: 0 0 12px rgba(255, 240, 102, 0.6), 2px 2px 4px #000;
+  letter-spacing: 1px;
+}
+
+h2 {
+  color: #ff9933;
+  text-align: center;
+  font-size: 17px;
+  margin-top: 0;
+  font-weight: 500;
+  text-shadow: 1px 1px 3px #000;
+}
+
+/* ===== Khung lệnh ===== */
+.commands {
+  max-width: 640px;
+  margin: 25px auto;
+  background: rgba(20, 8, 35, 0.85);
+  border: 2px solid #ffb703;
+  border-radius: 15px;
+  padding: 22px 30px;
+  box-shadow: 0 0 20px rgba(255, 183, 3, 0.25), inset 0 0 15px rgba(0, 0, 0, 0.6);
+  position: relative;
+  z-index: 2;
+}
+
+.commands p {
+  margin: 10px 0;
+  border-bottom: 1px dashed rgba(255, 204, 102, 0.15);
+  padding-bottom: 6px;
+}
+
+.commands p:last-child {
+  border-bottom: none;
+}
+
+.notice {
+  color: #ff4d4d;
+  font-weight: bold;
+  background: rgba(255, 77, 77, 0.15);
+  padding: 8px 12px;
+  border-radius: 6px;
+  border-left: 4px solid #ff4d4d;
+  text-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+}
+
+.cmd {
+  color: #ffee55;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 238, 85, 0.3);
+}
+
+/* ===== Chân trang ===== */
+.footer {
+  text-align: center;
+  font-size: 13px;
+  color: #d4af37;
+  margin-top: 25px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* ===== Gợi ý tham gia server ===== */
+.join-hint {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  z-index: 10;
+  animation: blink 1.6s infinite;
+  pointer-events: none;
+}
+
+.join-hint .arrow {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.join-hint-text {
+  color: #ff334b;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255, 51, 75, 0.8), 1px 1px 2px #000;
+  margin: 2px 0 0 0;
+}
+
+@keyframes blink {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+/* ===== 🐱 Con Mèo Trung Thu góc dưới phải ===== */
+.cat-wrapper {
+  position: fixed;
+  right: 40px;
+  bottom: 25px;
+  z-index: 5;
+}
+
+.cat {
+  position: relative;
+  width: 110px;
+  height: 90px;
+  background: #fff8e7; /* Màu lông mèo kem ấm áp */
+  border-radius: 60% 60% 50% 50% / 70% 70% 40% 40%;
+  box-shadow: inset 0 -5px 0 rgba(0,0,0,0.15), 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* Tái hoa / Tai mèo */
+.ear.left, .ear.right {
+  position: absolute;
+  top: -14px;
+  width: 0;
+  height: 0;
+  border-bottom: 22px solid #e6b89c;
+}
+
+.ear.left {
+  left: 15px;
+  border-left: 22px solid transparent;
+  border-right: 8px solid transparent;
+  transform: rotate(-5deg);
+}
+
+.ear.right {
+  right: 15px;
+  border-right: 22px solid transparent;
+  border-left: 8px solid transparent;
+  transform: rotate(5deg);
+}
+
+/* Mắt mèo */
+.eye {
+  position: absolute;
+  top: 32px;
+  width: 16px;
+  height: 16px;
+  background: #2b1055;
+  border-radius: 50%;
+}
+
+.eye::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.eye.left { left: 26px; }
+.eye.right { right: 26px; }
+
+/* Mũi & Râu */
+.nose {
+  position: absolute;
+  top: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 7px;
+  background: #ff80bf;
+  border-radius: 50% 50% 30% 30%;
+}
+
+.whisker.left::before, .whisker.left::after,
+.whisker.right::before, .whisker.right::after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 2px;
+  background: #d1b89d;
+}
+
+.whisker.left::before { left: -10px; top: 52px; transform: rotate(12deg); }
+.whisker.left::after  { left: -10px; top: 62px; transform: rotate(-12deg); }
+.whisker.right::before { right: -10px; top: 52px; transform: rotate(-12deg); }
+.whisker.right::after  { right: -10px; top: 62px; transform: rotate(12deg); }
+
+/* Lồng đèn nhỏ chú Mèo cầm thêm */
+.cat-mini-lantern {
+  position: absolute;
+  left: -20px;
+  top: 30px;
+  width: 22px;
+  height: 26px;
+  background: #ff3333;
+  border: 1px solid #ffcc00;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ff3333;
+}
+.cat-mini-lantern::after {
+  content: "🥮";
+  font-size: 10px;
+  position: absolute;
+  top: 4px;
+  left: 3px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🌕 Mặt trăng Đêm Rằm -->
+<div class="moon"></div>
+
+<!-- 🏮 Lồng đèn treo trang trí -->
+<div class="lantern-container">
+  <div class="lantern-wire"></div>
+  <div class="lantern"></div>
+  <div class="lantern-tassel"></div>
+</div>
+
+<h1>🥮 CHÀO MỪNG ĐẾN VỚI MÁY CHỦ CON MÈO BIẾT ĐI 🌕</h1>
+<h2> VUI TẾT TRUNG THU — RƯỚC ĐÈN DIỆT ZOMBIE </h2>
+
+<div class="commands">
+  <p class="notice">
+    📢 Vừa vào chat kêu Admin tạo bot để join nha.
+  </p>
+
+  <p><span class="cmd">!join</span> — Điều khiển một con bot.</p>
+  <p><span class="cmd">!afk</span> — Tạm rời bàn phím / vào chế độ nghỉ ngơi ngắm trăng.</p>
+  <p><span class="cmd">!drop</span> — Bỏ vũ khí hiện tại.</p>
+  <p><span class="cmd">!csm / !c / !n</span> — Đổi nhân vật đang chơi.</p>
+  <p><span class="cmd">Giữ Ctrl</span> — Kéo dậy bản thân hoặc cứu khỏi bị SI giữ.</p>
+  <p><span class="cmd">!cuutoi</span> — Tự cứu bản thân khi bị rơi vào góc lag (không incap).</p>
+  <p><span class="cmd">!bocuoc</span> — Bỏ cuộc khi không có ai cứu cả (khi incap).</p>
+</div>
+
+<div class="footer">
+  🌕 ĐÊM RẰM TRUNG THU — CON MÈO BIẾT ĐI 🥮<br>
+  © Vận hành bởi KeroN
+</div>
+
+<!-- 🐱 Con mèo đón Trung Thu -->
+<div class="cat-wrapper">
+  <div class="cat">
+    <div class="ear left"></div>
+    <div class="ear right"></div>
+    <div class="eye left"></div>
+    <div class="eye right"></div>
+    <div class="nose"></div>
+    <div class="whisker left"></div>
+    <div class="whisker right"></div>
+    <div class="cat-mini-lantern"></div>
+  </div>
+</div>
+
+<!-- ⬇️ Gợi ý bấm tham gia server -->
+<div class="join-hint">
+  <div class="arrow">⬇️</div>
+  <p class="join-hint-text">Bấm vào bên dưới để tham gia máy chủ</p>
+</div>
+
+</body>
+</html>
