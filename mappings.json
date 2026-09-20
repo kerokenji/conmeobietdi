@@ -3,6 +3,14 @@
         "discord_id": "453518925997670411",
         "ingame_name": "KeroN"
     },
+    "STEAM_0:1:626078671": {
+        "discord_id": "893864528050286633",
+        "ingame_name": "chimxanh"
+    },
+    "STEAM_0:0:218160880": {
+        "discord_id": "602009709721026576",
+        "ingame_name": "Bảo Nguyên"
+    },
     "STEAM_0:0:937958833": {
         "discord_id": "1113442143902650398",
         "ingame_name": ""
@@ -18,6 +26,22 @@
     "STEAM_0:1:812564846": {
         "discord_id": "607549220139827215",
         "ingame_name": ""
+    },
+    "STEAM_0:0:690072085": {
+        "discord_id": "788072951148838922",
+        "ingame_name": ""
+    },
+    "STEAM_0:0:606728972": {
+        "discord_id": "948379308332830770",
+        "ingame_name": "LmaoLmao"
+    },
+    "STEAM_0:0:471595906": {
+        "discord_id": "592742714953433148",
+        "ingame_name": "Lê Hải"
+    },
+    "STEAM_0:1:925049770": {
+        "discord_id": "1005453190524846203",
+        "ingame_name": "Holo 40k"
     },
     "STEAM_0:1:938430432": {
         "discord_id": "1082559948824793118",
@@ -271,6 +295,10 @@
         "discord_id": "485098847245434881",
         "ingame_name": "[VN✪] BigD"
     },
+    "[VN✪": {
+        "discord_id": "485098847245434881",
+        "ingame_name": "[VN✪"
+    },
     "STEAM_1:0:240772457": {
         "discord_id": "864909957111873566",
         "ingame_name": "jalong"
@@ -278,5 +306,9 @@
     "STEAM_1:0:682073546": {
         "discord_id": "898904813880881162",
         "ingame_name": "Blove"
+    },
+    "STEAM_1:0:205902736": {
+        "discord_id": "987175543948587028",
+        "ingame_name": "CHENCHONG XIAOMI V8 TURBO"
     }
 }
