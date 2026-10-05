@@ -5,11 +5,11 @@
     },
     "STEAM_0:1:626078671": {
         "discord_id": "893864528050286633",
-        "ingame_name": "chimxanh"
+        "ingame_name": ""
     },
     "STEAM_0:0:218160880": {
         "discord_id": "602009709721026576",
-        "ingame_name": "Bảo Nguyên"
+        "ingame_name": ""
     },
     "STEAM_0:0:937958833": {
         "discord_id": "1113442143902650398",
@@ -33,15 +33,15 @@
     },
     "STEAM_0:0:606728972": {
         "discord_id": "948379308332830770",
-        "ingame_name": "LmaoLmao"
+        "ingame_name": ""
     },
     "STEAM_0:0:471595906": {
         "discord_id": "592742714953433148",
-        "ingame_name": "Lê Hải"
+        "ingame_name": ""
     },
     "STEAM_0:1:925049770": {
         "discord_id": "1005453190524846203",
-        "ingame_name": "Holo 40k"
+        "ingame_name": ""
     },
     "STEAM_0:1:938430432": {
         "discord_id": "1082559948824793118",
@@ -53,7 +53,7 @@
     },
     "STEAM_1:1:415531968": {
         "discord_id": "1153216266107093012",
-        "ingame_name": ""
+        "ingame_name": "minhtr20082006"
     },
     "STEAM_1:1:807756351": {
         "discord_id": "875219592564334672",
@@ -310,5 +310,9 @@
     "STEAM_1:0:205902736": {
         "discord_id": "987175543948587028",
         "ingame_name": "CHENCHONG XIAOMI V8 TURBO"
+    },
+    "STEAM_1:0:448283843": {
+        "discord_id": "1351188955651113032",
+        "ingame_name": "Where my BEAR"
     }
 }
