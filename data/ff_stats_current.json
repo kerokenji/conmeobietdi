@@ -2,5 +2,102 @@
     "meta": {
         "week": "2026-W46"
     },
-    "players": {}
+    "players": {
+        "482331255623385092": {
+            "shot": 3749,
+            "shotted": 1347,
+            "kills_dealt": 0,
+            "incaps_dealt": 0,
+            "deaths": 2,
+            "incaps_received": 9
+        },
+        "485098847245434881": {
+            "shot": 2244,
+            "shotted": 1874,
+            "kills_dealt": 2,
+            "incaps_dealt": 6,
+            "deaths": 1,
+            "incaps_received": 6
+        },
+        "1216426651441692814": {
+            "shot": 2096,
+            "shotted": 343,
+            "kills_dealt": 0,
+            "incaps_dealt": 0,
+            "deaths": 2,
+            "incaps_received": 5
+        },
+        "453518925997670411": {
+            "shot": 1628,
+            "shotted": 1487,
+            "kills_dealt": 0,
+            "incaps_dealt": 5,
+            "deaths": 0,
+            "incaps_received": 3
+        },
+        "822077728278446100": {
+            "shot": 1214,
+            "shotted": 1812,
+            "kills_dealt": 2,
+            "incaps_dealt": 2,
+            "deaths": 0,
+            "incaps_received": 3
+        },
+        "602009709721026576": {
+            "shot": 1209,
+            "shotted": 2598,
+            "kills_dealt": 1,
+            "incaps_dealt": 6,
+            "deaths": 0,
+            "incaps_received": 6
+        },
+        "493700794189742085": {
+            "shot": 1207,
+            "shotted": 1228,
+            "kills_dealt": 2,
+            "incaps_dealt": 9,
+            "deaths": 1,
+            "incaps_received": 2
+        },
+        "1005453190524846203": {
+            "shot": 877,
+            "shotted": 2062,
+            "kills_dealt": 1,
+            "incaps_dealt": 4,
+            "deaths": 2,
+            "incaps_received": 3
+        },
+        "526649486890631178": {
+            "shot": 845,
+            "shotted": 1455,
+            "kills_dealt": 1,
+            "incaps_dealt": 3,
+            "deaths": 2,
+            "incaps_received": 1
+        },
+        "1076788550508494908": {
+            "shot": 615,
+            "shotted": 873,
+            "kills_dealt": 1,
+            "incaps_dealt": 6,
+            "deaths": 0,
+            "incaps_received": 1
+        },
+        "1191549123753672715": {
+            "shot": 284,
+            "shotted": 522,
+            "kills_dealt": 1,
+            "incaps_dealt": 0,
+            "deaths": 1,
+            "incaps_received": 1
+        },
+        "592742714953433148": {
+            "shot": 69,
+            "shotted": 397,
+            "kills_dealt": 0,
+            "incaps_dealt": 0,
+            "deaths": 0,
+            "incaps_received": 1
+        }
+    }
 }
