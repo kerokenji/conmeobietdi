@@ -1,6 +1,79 @@
 {
     "meta": {
-        "week": "2026-W47"
+        "week": "2026-W48"
     },
-    "players": {}
+    "players": {
+        "1472538961485234278": {
+            "shot": 1016,
+            "shotted": 274,
+            "kills_dealt": 0,
+            "incaps_dealt": 2,
+            "deaths": 0,
+            "incaps_received": 1
+        },
+        "1076788550508494908": {
+            "shot": 741,
+            "shotted": 646,
+            "kills_dealt": 0,
+            "incaps_dealt": 3,
+            "deaths": 0,
+            "incaps_received": 0
+        },
+        "822077728278446100": {
+            "shot": 703,
+            "shotted": 445,
+            "kills_dealt": 0,
+            "incaps_dealt": 1,
+            "deaths": 0,
+            "incaps_received": 1
+        },
+        "485098847245434881": {
+            "shot": 683,
+            "shotted": 386,
+            "kills_dealt": 0,
+            "incaps_dealt": 3,
+            "deaths": 1,
+            "incaps_received": 2
+        },
+        "482331255623385092": {
+            "shot": 572,
+            "shotted": 1034,
+            "kills_dealt": 0,
+            "incaps_dealt": 1,
+            "deaths": 0,
+            "incaps_received": 2
+        },
+        "453518925997670411": {
+            "shot": 417,
+            "shotted": 641,
+            "kills_dealt": 1,
+            "incaps_dealt": 0,
+            "deaths": 0,
+            "incaps_received": 2
+        },
+        "526649486890631178": {
+            "shot": 309,
+            "shotted": 633,
+            "kills_dealt": 0,
+            "incaps_dealt": 0,
+            "deaths": 0,
+            "incaps_received": 1
+        },
+        "602009709721026576": {
+            "shot": 302,
+            "shotted": 247,
+            "kills_dealt": 0,
+            "incaps_dealt": 0,
+            "deaths": 0,
+            "incaps_received": 1
+        },
+        "893864528050286633": {
+            "shot": 250,
+            "shotted": 437,
+            "kills_dealt": 0,
+            "incaps_dealt": 0,
+            "deaths": 0,
+            "incaps_received": 0
+        }
+    }
 }
